@@ -9,15 +9,15 @@
           <q-menu>
             <div class="row q-pa-lg">
               <div class="column">
-                <q-item-label class="text-h6">TEACHER</q-item-label>
+                <q-item-label class="text-h6">STUDENT</q-item-label>
                 <q-linear-progress
                   class="q-mb-lg"
                   color="grey-4"
                   style="height: 2px"
                 />
                 <div class="items-center">
-                  <div class="q-mb-xs">Teacher Id :</div>
-                  <div class="q-mb-xs">Teacher Name :</div>
+                  <div class="q-mb-xs">Student Id :</div>
+                  <div class="q-mb-xs">Student Name :</div>
                 </div>
               </div>
 
@@ -55,32 +55,24 @@
               <q-avatar size="100px" class="q-mb-md">
                 <img src="https://placeimg.com/500/300/nature" alt="" />
               </q-avatar>
-              <div>Teacher Name</div>
+              <div>Student Name</div>
             </div>
           </q-item>
           <q-item-label header class="text-grey-6">
-            Admin Panel
+            Student Panel
           </q-item-label>
-          <q-item to="/" active-class="q-item-no-link-highlighting">
+          <q-item to="/student" active-class="q-item-no-link-highlighting">
             <q-item-section avatar>
               <q-icon name="dashboard" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>TEACHER__DETAILS</q-item-label>
+              <q-item-label>Student__Profile</q-item-label>
             </q-item-section>
           </q-item>
           <q-item
-            to="/student/details"
+            to="/student/request/book"
             active-class="q-item-no-link-highlighting"
           >
-            <q-item-section avatar>
-              <q-icon name="dashboard" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>STUDENT__DETAILS</q-item-label>
-            </q-item-section>
-          </q-item>
-          <q-item to="/book/details" active-class="q-item-no-link-highlighting">
             <q-item-section avatar>
               <q-icon name="dashboard" />
             </q-item-section>
@@ -88,13 +80,15 @@
               <q-item-label>BOOK__DETAILS</q-item-label>
             </q-item-section>
           </q-item>
-           <!-- </q-item> -->
-          <q-item to="/book/request" active-class="q-item-no-link-highlighting">
+           <q-item
+            to="student/request/image"
+            active-class="q-item-no-link-highlighting"
+          >
             <q-item-section avatar>
               <q-icon name="dashboard" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>REQUESTED__BOOK</q-item-label>
+              <q-item-label>STUDENT_IMAGE</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
@@ -108,7 +102,7 @@
  
 <script>
 export default {
-  name: "MainLayout",
+  name: "studentlayout",
 
   data() {
     return {

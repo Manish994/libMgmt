@@ -1,41 +1,60 @@
 <template>
-  <div class="q-pa-md" style="max-width: 400px">
-    <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-      <q-input
-        filled
-        v-model="name"
-        label="Your name *"
-        hint="Name and surname"
-        lazy-rules
-        :rules="[val => (val && val.length > 0) || 'Please type something']"
-      />
+  <q-layout>
+    <q-page class="row items-center">
+      <div class="col-md-7 offset-md-2 col-xs-12 q-pl-md q-pr-md">
+        <q-card-section class="bg-teal-1">
+          <div class="row col-md-6 col-xs-12">
+            <q-img src="~/assets/user.png" width="300px" height="300px"></q-img>
+            <div class="col-md-6 col-xs-12">
+              <div class="q-mt-xl">
+                <q-form>
+                  <q-input
+                    filled
+                    v-model="loginDetails.username"
+                    label="UserName *"
+                    lazy-rules
+                    :rules="[
+                      val => (val && val.length > 0) || 'Please type UserName'
+                    ]"
+                  >
+                    <template v-slot:append>
+                      <q-icon name="person" />
+                    </template>
+                  </q-input>
 
-      <q-input
-        filled
-        type="number"
-        v-model="age"
-        label="Your age *"
-        lazy-rules
-        :rules="[
-          val => (val !== null && val !== '') || 'Please type your age',
-          val => (val > 0 && val < 100) || 'Please type a real age'
-        ]"
-      />
+                  <q-input
+                    filled
+                    v-model="loginDetails.password"
+                    label="Password *"
+                    lazy-rules
+                    :rules="[
+                      val => (val && val.length > 0) || 'Please type Password'
+                    ]"
+                  >
+                    <template v-slot:append>
+                      <q-icon name="password" />
+                    </template>
+                  </q-input>
 
-      <q-toggle v-model="accept" label="I accept the license and terms" />
-
-      <div>
-        <q-btn label="Submit" type="submit" color="primary" />
-        <q-btn
-          label="Reset"
-          type="reset"
-          color="primary"
-          flat
-          class="q-ml-sm"
-        />
+                  <div>
+                    <q-btn label="Login" type="submit" color="primary"  v-on:click="loginCredentials"/>
+                    <q-btn
+                      label="Register"
+                      type="reset"
+                      color="primary"
+                      flat
+                      class="q-ml-sm"
+                      to="/auth/register"
+                    />
+                  </div>
+                </q-form>
+              </div>
+            </div>
+          </div>
+        </q-card-section>
       </div>
-    </q-form>
-  </div>
+    </q-page>
+  </q-layout>
 </template>
 
 <script>
@@ -43,36 +62,17 @@ export default {
   name: "login",
   data() {
     return {
-      name: null,
-      age: null,
-
-      accept: false
+      loginDetails: {
+        username: "",
+        password: ""
+      }
     };
   },
-
   methods: {
-    onSubmit() {
-      if (this.accept !== true) {
-        this.$q.notify({
-          color: "red-5",
-          textColor: "white",
-          icon: "warning",
-          message: "You need to accept the license and terms first"
-        });
-      } else {
-        this.$q.notify({
-          color: "green-4",
-          textColor: "white",
-          icon: "cloud_done",
-          message: "Submitted"
-        });
-      }
-    },
-
-    onReset() {
-      this.name = null;
-      this.age = null;
-      this.accept = false;
+    loginCredentials: async function() {
+      let vm = this;
+      let response = await vm.$axios.post("api/login", vm.loginDetails);
+      console.log(response)
     }
   }
 };
