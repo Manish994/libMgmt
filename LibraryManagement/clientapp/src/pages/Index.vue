@@ -188,7 +188,7 @@
             <th class="text-left">Teacher_ID</th>
             <th class="text-left">First_Name</th>
             <th class="text-left">Last_Name</th>
-            <th class="text-left">Branch</th>
+            <th class="text-left">Department</th>
             <th class="text-left">Email</th>
             <th class="text-left">Contact_Number</th>
             <!-- <th class="text-left">Address</th> -->
@@ -200,7 +200,7 @@
             <td>{{ user.id }}</td>
             <td>{{ user.firstName }}</td>
             <td>{{ user.lastName }}</td>
-            <td>{{ user.branch }}</td>
+            <td>{{ user.department.name}}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.contactNumber }}</td>
             <!-- <td>{{ user.address }}</td> -->
@@ -300,7 +300,6 @@ export default {
     },
     saveNewTeacher: async function () {
       let vm = this;
-      console.log(vm.addNewTeacher);
       let formData = new FormData();
       formData.append("file", vm.file);
       formData.append("FirstName", vm.addNewTeacher.firstName);
@@ -343,7 +342,7 @@ export default {
       vm.$q.loading.show();
       const response = await vm.$axios.get("get-Teachers");
       vm.$q.loading.hide();
-      console.log(response);
+      
       vm.teachersinfo = response.data;
     },
 

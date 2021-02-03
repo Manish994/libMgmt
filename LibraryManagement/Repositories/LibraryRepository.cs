@@ -14,6 +14,7 @@ namespace LibraryManagement.Repositories
         Task Insert(BookDetail bookdetail);
         Task<IEnumerable<BookDetail>> GetAll();
         Task<IEnumerable<TeacherDetail>> GetAllTeacher();
+        Task<IEnumerable<Department>> GetAllDepartment();
         Task<IEnumerable<Department>> Department();
         Task<IEnumerable<BookDetail>> GetAllBooks();
 
@@ -55,9 +56,13 @@ namespace LibraryManagement.Repositories
 
         public async Task<IEnumerable<TeacherDetail>> GetAllTeacher()
         {
-            return await _LibraryDBContext.TeacherDetails.ToListAsync();
+            return await _LibraryDBContext.TeacherDetails.Include(x => x.Department).ToListAsync();
         }
 
+        public async Task<IEnumerable<Department>> GetAllDepartment()
+        {
+            return await _LibraryDBContext.Departments.ToListAsync();
+        }
         public async Task Insert(BookDetail bookdetail)
         {
             await _LibraryDBContext.BookDetails.AddAsync(bookdetail);

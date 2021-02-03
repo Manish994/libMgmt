@@ -42,10 +42,10 @@ namespace LibraryManagement.Controllers
                 TeacherDetail teacherDetail = new TeacherDetail();
                 teacherDetail.FirstName = HttpContext.Request.Form["FirstName"];
                 teacherDetail.LastName = HttpContext.Request.Form["LastName"];
-                teacherDetail.Department = int.Parse(HttpContext.Request.Form["Id"]);
+                teacherDetail.DepartmentId = int.Parse(HttpContext.Request.Form["Id"]);
                 teacherDetail.Email = HttpContext.Request.Form["Email"];
                 teacherDetail.ContactNumber = HttpContext.Request.Form["Contact"];
-                teacherDetail.ImagePath = fileName;
+                teacherDetail.ImageName = fileName;
                 await _libraryRepository.Insert(teacherDetail);
 
 
@@ -64,7 +64,9 @@ namespace LibraryManagement.Controllers
         {
             try
             {
+               
                 IEnumerable<TeacherDetail> teacherDetails = await _libraryRepository.GetAllTeacher();
+
                 return Ok(teacherDetails);
             }
             catch (Exception ex)

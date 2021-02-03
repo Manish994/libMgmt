@@ -11,9 +11,11 @@ namespace LibraryManagement.ViewModel
         public string TeacherId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int? Department { get; set; }
+        public int? DepartmentId { get; set; }
         public string Email { get; set; }
         public string ContactNumber { get; set; }
-        public string ImagePath { get; set; }
+        public string ImageName { get; set; }
+
+        public virtual Department Department { get; set; }
     }
 }

@@ -17,6 +17,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using static LibraryManagement.Requirements.UserStatusRequirement;
+using Newtonsoft.Json;
 
 namespace LibraryManagement
 {
@@ -66,7 +67,7 @@ namespace LibraryManagement
                 .AllowAnyHeader();
             }));
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddNewtonsoftJson().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddTransient<ILibraryRepository, LibraryRepository>();
 
             services.AddControllersWithViews();

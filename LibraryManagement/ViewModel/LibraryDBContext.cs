@@ -27,7 +27,6 @@ namespace LibraryManagement.ViewModel
         {
             if (!optionsBuilder.IsConfigured)
             {
-
                 optionsBuilder.UseSqlServer("Server=DESKTOP-QCHQ7OV;Database=LibraryDB;Trusted_Connection=True;");
             }
         }
@@ -61,10 +60,9 @@ namespace LibraryManagement.ViewModel
             {
                 entity.ToTable("Department");
 
-                entity.Property(e => e.Department1)
+                entity.Property(e => e.Name)
                     .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("Department");
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Login>(entity =>
@@ -129,7 +127,7 @@ namespace LibraryManagement.ViewModel
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.ImagePath)
+                entity.Property(e => e.ImageName)
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
@@ -140,6 +138,11 @@ namespace LibraryManagement.ViewModel
                 entity.Property(e => e.TeacherId)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Department)
+                    .WithMany(p => p.TeacherDetails)
+                    .HasForeignKey(d => d.DepartmentId)
+                    .HasConstraintName("FK_TeacherDetail_Department");
             });
 
             OnModelCreatingPartial(modelBuilder);
