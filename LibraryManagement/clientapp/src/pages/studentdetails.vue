@@ -20,7 +20,7 @@
           <q-input label="Last Name" v-model="addNewStudent.lastName"
             ><template v-slot:append> <q-icon name="person" /> </template
           ></q-input>
-          <q-input label="Branch" v-model="addNewStudent.branch"
+          <q-input label="Department" v-model="addNewStudent.branch"
             ><template v-slot:append> <q-icon name="border_color" /> </template
           ></q-input>
           <q-input label="E-Mail" v-model="addNewStudent.email"
@@ -134,7 +134,7 @@ export default {
         branch: "",
         email: "",
         contactNumber: "",
-        address: ""
+        address: "",
       },
       openStudentEditDialog: false,
       addNewStudentNew: {
@@ -143,26 +143,30 @@ export default {
         branch: "",
         email: "",
         contactNumber: "",
-        address: ""
+        address: "",
       },
-      openStudentAddDialog: false
+      openStudentAddDialog: false,
     };
   },
   methods: {
-    getStudents: async function() {
+    getStudents: async function () {
+      try {
+        vm.$q.loading.show();
+        const response = await vm.$axios.get("get-AllStudents");
+        vm.$q.loading.hide();
+        vm.students = response.data;
+      } catch (error) {
+        vm.$q.loading.hide();
+      }
       let vm = this;
-      vm.$q.loading.show();
-      const response = await vm.$axios.get("get-AllStudents");
-      vm.$q.loading.hide();
-      vm.students = response.data;
     },
-    onUpdate: async function(id) {
+    onUpdate: async function (id) {
       let vm = this;
       let response = await vm.$axios.get(`getStudentsById/` + id);
       this.openStudentEditDialog = true;
       vm.addNewStudentNew = response.data;
     },
-    saveUpdateStudent: async function() {
+    saveUpdateStudent: async function () {
       let vm = this;
       let response = await vm.$axios.post(
         "saveUpdate-StudentDetails",
@@ -170,31 +174,31 @@ export default {
       );
       vm.$q.notify({
         message: response.data,
-        color: "green"
+        color: "green",
       });
       vm.openStudentEditDialog = false;
       vm.restetFormUpdate();
       vm.getStudents();
     },
-    onRemove: async function(user) {
+    onRemove: async function (user) {
       let vm = this;
       vm.$q
         .dialog({
           title: "Confim",
           message: "Are you confirm to delete?",
           cancel: true,
-          persistent: true
+          persistent: true,
         })
         .onOk(async () => {
           let response = await vm.$axios.post("del-Student", user);
           await vm.getStudents();
           vm.$q.notify({
             message: response.data,
-            color: "red"
+            color: "red",
           });
         });
     },
-    saveNewStudent: async function() {
+    saveNewStudent: async function () {
       let vm = this;
       let response = await vm.$axios.post(
         "insert-newStudent",
@@ -202,16 +206,16 @@ export default {
       );
       vm.$q.notify({
         message: response.data,
-        color: "green"
+        color: "green",
       });
       vm.openStudentAddDialog = false;
       vm.restetForm();
       vm.getStudents();
     },
-    onAddStudent: function() {
+    onAddStudent: function () {
       this.openStudentAddDialog = true;
     },
-    restetForm: function() {
+    restetForm: function () {
       let vm = this;
       vm.addNewStudent.firstName = "";
       vm.addNewStudent.lastName = "";
@@ -220,7 +224,7 @@ export default {
       vm.addNewStudent.contactNumber = "";
       vm.addNewStudent.address = "";
     },
-    restetFormUpdate: function() {
+    restetFormUpdate: function () {
       let vm = this;
       vm.addNewStudentNew.firstName = "";
       vm.addNewStudentNew.lastName = "";
@@ -228,13 +232,13 @@ export default {
       vm.addNewStudentNew.email = "";
       vm.addNewStudentNew.contactNumber = "";
       vm.addNewStudentNew.address = "";
-    }
+    },
   },
   async mounted() {
     let vm = this;
     vm.$q.loading.show();
     await vm.getStudents();
     vm.$q.loading.hide();
-  }
+  },
 };
 </script>

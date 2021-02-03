@@ -73,19 +73,6 @@
               ]"
               ><template v-slot:append> <q-icon name="phone" /> </template
             ></q-input>
-            <!-- <q-input
-              label="Address"
-              v-model="addNewTeacher.address"
-              lazy-rules
-              color="teal"
-              :rules="[
-                (val) =>
-                  (val !== null && val !== '') ||
-                  'Please Provide Current Address',
-              ]"
-              ><template v-slot:append>
-                <q-icon name="location_city" /> </template
-            ></q-input> -->
 
             <q-file filled v-model="file" label="File Upload"> </q-file>
           </q-card-section>
@@ -126,7 +113,7 @@
               ]"
               ><template v-slot:append> <q-icon name="person" /> </template
             ></q-input>
-             <q-select
+            <q-select
               square
               outlined
               v-model="addNewTeacherNew.department"
@@ -134,7 +121,6 @@
               option-label="name"
               label="Select Department"
               option-value="id"
-              
             />
             <q-input
               label="E-Mail"
@@ -159,19 +145,7 @@
               ]"
               ><template v-slot:append> <q-icon name="phone" /> </template
             ></q-input>
-            <!-- <q-input
-              label="Address"
-              v-model="addNewTeacherNew.address"
-              lazy-rules
-              color="teal"
-              :rules="[
-                (val) =>
-                  (val !== null && val !== '') ||
-                  'Please Provide Current Address',
-              ]"
-              ><template v-slot:append>
-                <q-icon name="location_city" /> </template
-            ></q-input> -->
+
           </q-card-section>
 
           <q-card-actions align="right" class="bg-white text-teal">
@@ -198,7 +172,7 @@
             <td>{{ user.id }}</td>
             <td>{{ user.firstName }}</td>
             <td>{{ user.lastName }}</td>
-            <td>{{ user.department.name}}</td>
+            <td>{{ user.department.name }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.contactNumber }}</td>
             <!-- <td>{{ user.address }}</td> -->
@@ -244,7 +218,6 @@ export default {
         branch: "",
         email: "",
         contactNumber: "",
-        // address: "",
       },
       addNewTeacherNew: {
         firstName: "",
@@ -252,7 +225,6 @@ export default {
         department: null,
         email: "",
         contactNumber: "",
-        // address: "",
       },
       openEditTeacherDialog: false,
     };
@@ -261,6 +233,7 @@ export default {
     onUpdate: async function (id) {
       let vm = this;
       let response = await vm.$axios.get(`teachers/` + id);
+      console.log(response.data);
       this.openEditTeacherDialog = true;
       vm.addNewTeacherNew = response.data;
     },
@@ -303,8 +276,8 @@ export default {
       formData.append("FirstName", vm.addNewTeacher.firstName);
       formData.append("LastName", vm.addNewTeacher.lastName);
       formData.append("Id", vm.selectedDepartment.id);
-      formData.append("Email",vm.addNewTeacher.email);
-      formData.append("Contact",vm.addNewTeacher.contactNumber);
+      formData.append("Email", vm.addNewTeacher.email);
+      formData.append("Contact", vm.addNewTeacher.contactNumber);
       let response = await vm.$axios.post("insert-newteacher", formData);
       vm.$q.notify({
         message: response.data,
@@ -321,11 +294,10 @@ export default {
       let vm = this;
       vm.addNewTeacher.firstName = "";
       vm.addNewTeacher.lastName = "";
-      vm.selectedDepartment=null;
+      vm.selectedDepartment = null;
       vm.addNewTeacher.email = "";
       vm.addNewTeacher.contactNumber = "";
-      vm.file=null;
-      // vm.addNewTeacher.address = "";
+      vm.file = null;
     },
     restetFormUpdate: function () {
       let vm = this;
@@ -338,11 +310,14 @@ export default {
     },
     getTeachers: async function () {
       let vm = this;
-      vm.$q.loading.show();
-      const response = await vm.$axios.get("get-Teachers");
-      vm.$q.loading.hide();
-      
-      vm.teachersinfo = response.data;
+      try {
+        vm.$q.loading.show();
+        const response = await vm.$axios.get("get-Teachers");
+        vm.$q.loading.hide();
+        vm.teachersinfo = response.data;
+      } catch (error) {
+        vm.$q.loading.hide();
+      }
     },
 
     getTeacherDepartment: async function () {
