@@ -47,7 +47,7 @@
               outlined
               v-model="selectedDepartment"
               :options="teacherDepInfo"
-              option-label="department1"
+              option-label="name"
               label="Select Department"
             />
             <q-input
@@ -126,18 +126,16 @@
               ]"
               ><template v-slot:append> <q-icon name="person" /> </template
             ></q-input>
-            <q-input
-              label="Branch"
-              v-model="addNewTeacherNew.branch"
-              lazy-rules
-              color="teal"
-              :rules="[
-                (val) =>
-                  (val !== null && val !== '') || 'Please Provide Branch Name',
-              ]"
-              ><template v-slot:append>
-                <q-icon name="border_color" /> </template
-            ></q-input>
+             <q-select
+              square
+              outlined
+              v-model="addNewTeacherNew.department"
+              :options="teacherDepInfo"
+              option-label="name"
+              label="Select Department"
+              option-value="id"
+              
+            />
             <q-input
               label="E-Mail"
               v-model="addNewTeacherNew.email"
@@ -251,7 +249,7 @@ export default {
       addNewTeacherNew: {
         firstName: "",
         lastName: "",
-        branch: "",
+        department: null,
         email: "",
         contactNumber: "",
         // address: "",
@@ -323,9 +321,10 @@ export default {
       let vm = this;
       vm.addNewTeacher.firstName = "";
       vm.addNewTeacher.lastName = "";
-      vm.addNewTeacher.branch = "";
+      vm.selectedDepartment=null;
       vm.addNewTeacher.email = "";
       vm.addNewTeacher.contactNumber = "";
+      vm.file=null;
       // vm.addNewTeacher.address = "";
     },
     restetFormUpdate: function () {

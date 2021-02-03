@@ -77,7 +77,8 @@ namespace LibraryManagement.Repositories
 
         public async Task<TeacherDetail> GetById(int id)
         {
-            return await _LibraryDBContext.TeacherDetails.FirstOrDefaultAsync(x => x.Id == id);
+            return await _LibraryDBContext.TeacherDetails.Include(x => x.Department).FirstOrDefaultAsync(x => x.Id == id);
+           
         }
 
         public async Task updateInsert(TeacherDetail teacherdetail)
