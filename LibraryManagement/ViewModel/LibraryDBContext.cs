@@ -18,8 +18,8 @@ namespace LibraryManagement.ViewModel
         }
 
         public virtual DbSet<BookDetail> BookDetails { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Login> Logins { get; set; }
-        public virtual DbSet<RequestBook> RequestBooks { get; set; }
         public virtual DbSet<StudentDetail> StudentDetails { get; set; }
         public virtual DbSet<TeacherDetail> TeacherDetails { get; set; }
 
@@ -27,7 +27,8 @@ namespace LibraryManagement.ViewModel
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("name=DefaultConnection");
+
+                optionsBuilder.UseSqlServer("Server=DESKTOP-QCHQ7OV;Database=LibraryDB;Trusted_Connection=True;");
             }
         }
 
@@ -37,49 +38,58 @@ namespace LibraryManagement.ViewModel
 
             modelBuilder.Entity<BookDetail>(entity =>
             {
+                entity.ToTable("BookDetail");
+
                 entity.Property(e => e.AuthorName)
-                    .HasMaxLength(20)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.BookId)
-                    .HasMaxLength(10)
+                    .HasMaxLength(20)
                     .IsUnicode(false);
 
                 entity.Property(e => e.BookName)
-                    .HasMaxLength(25)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.ImagePath)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Department>(entity =>
+            {
+                entity.ToTable("Department");
+
+                entity.Property(e => e.Department1)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("Department");
             });
 
             modelBuilder.Entity<Login>(entity =>
             {
                 entity.ToTable("Login");
 
+                entity.Property(e => e.Logout).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.Password)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Role).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.Username)
                     .HasMaxLength(50)
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<RequestBook>(entity =>
-            {
-                entity.ToTable("RequestBook");
-
-                entity.Property(e => e.DueDate).HasColumnType("date");
-
-                entity.Property(e => e.IssueDate).HasColumnType("date");
-            });
-
             modelBuilder.Entity<StudentDetail>(entity =>
             {
-                entity.Property(e => e.Address)
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+                entity.ToTable("StudentDetail");
 
-                entity.Property(e => e.Branch)
-                    .HasMaxLength(10)
+                entity.Property(e => e.Address)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ContactNumber)
@@ -87,41 +97,47 @@ namespace LibraryManagement.ViewModel
                     .IsUnicode(false);
 
                 entity.Property(e => e.Email)
-                    .HasMaxLength(25)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.FirstName)
-                    .HasMaxLength(25)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.LastName)
-                    .HasMaxLength(25)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<TeacherDetail>(entity =>
-            {
-                entity.Property(e => e.Address)
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Branch)
-                    .HasMaxLength(15)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ContactNumber)
-                    .HasMaxLength(13)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Email)
-                    .HasMaxLength(20)
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.FirstName)
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.ImagePath)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.LastName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<TeacherDetail>(entity =>
+            {
+                entity.ToTable("TeacherDetail");
+
+                entity.Property(e => e.ContactNumber)
+                    .HasMaxLength(15)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FirstName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.ImagePath)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.LastName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.TeacherId)
                     .HasMaxLength(50)
                     .IsUnicode(false);
             });

@@ -9,21 +9,21 @@ using Microsoft.AspNetCore.Mvc;
 namespace LibraryManagement.Controllers
 {
     [ApiController]
-    public class StudentLayoutController : Controller
+    public class studentlayoutcontroller : Controller
     {
         private readonly ILibraryRepository _libraryRepository;
-        public StudentLayoutController(ILibraryRepository libraryRepository)
+        public studentlayoutcontroller(ILibraryRepository libraryRepository)
         {
             _libraryRepository = libraryRepository;
         }
         [HttpGet]
-        [Route("get-DetailStudent")]
-        public async Task<IActionResult> GetDetailStudent()
+        [Route("get-detailstudent")]
+        public async Task<IActionResult> getdetailstudent()
         {
             try
             {
-                IEnumerable<StudentDetail> studentDetails = await _libraryRepository.GetDetailStudent();
-                return Ok(studentDetails);
+                IEnumerable<StudentDetail> studentdetails = await _libraryRepository.GetDetailStudent();
+                return Ok(studentdetails);
             }
             catch (Exception ex)
             {

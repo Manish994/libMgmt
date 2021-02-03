@@ -5,10 +5,9 @@ using System.Collections.Generic;
 
 namespace LibraryManagement.ViewModel
 {
-    public partial class StudentLogin
+    public partial class Department
     {
         public int Id { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string Department1 { get; set; }
     }
 }

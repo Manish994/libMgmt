@@ -14,6 +14,9 @@ namespace LibraryManagement.Repositories
         Task Insert(BookDetail bookdetail);
         Task<IEnumerable<BookDetail>> GetAll();
         Task<IEnumerable<TeacherDetail>> GetAllTeacher();
+        Task<IEnumerable<Department>> Department();
+        Task<IEnumerable<BookDetail>> GetAllBooks();
+
         Task DelById(TeacherDetail teacherdetail);
         Task<TeacherDetail> GetById(int id);
         Task updateInsert(TeacherDetail teacherdetail);
@@ -27,7 +30,7 @@ namespace LibraryManagement.Repositories
         Task DelStudentsById(StudentDetail studentdetail);
         Task<IEnumerable<StudentDetail>> GetDetailStudent();
     }
-    public class LibraryRepository:ILibraryRepository
+    public class LibraryRepository : ILibraryRepository
     {
         private readonly LibraryDBContext _LibraryDBContext;
         public LibraryRepository(LibraryDBContext LibraryDBContext)
@@ -43,6 +46,11 @@ namespace LibraryManagement.Repositories
         public async Task<IEnumerable<BookDetail>> GetAll()
         {
             return await _LibraryDBContext.BookDetails.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Department>> Department()
+        {
+            return await _LibraryDBContext.Departments.ToListAsync();
         }
 
         public async Task<IEnumerable<TeacherDetail>> GetAllTeacher()
@@ -120,6 +128,11 @@ namespace LibraryManagement.Repositories
         public async Task<IEnumerable<StudentDetail>> GetDetailStudent()
         {
             return await _LibraryDBContext.StudentDetails.ToListAsync();
+        }
+
+        public Task<IEnumerable<BookDetail>> GetAllBooks()
+        {
+            throw new NotImplementedException();
         }
     }
 }

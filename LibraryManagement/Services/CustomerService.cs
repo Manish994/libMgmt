@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using LibraryManagement.Helpers;
 using LibraryManagement.Interfaces;
@@ -27,7 +25,7 @@ namespace LibraryManagement.Services
             }
 
             var token = await Task.Run(() => TokenHelper.GenerateToken(user));
-            return new LoginResponse { Username = user.Username,  Token = token };
+            return new LoginResponse { Username = user.Username, Token = token };
         }
     }
 }

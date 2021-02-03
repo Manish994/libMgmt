@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using LibraryManagement.Repositories;
 using LibraryManagement.ViewModel;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.Controllers
@@ -13,18 +16,40 @@ namespace LibraryManagement.Controllers
     {
         private readonly ILibraryRepository _libraryRepository;
 
-        public TeacherDetails(ILibraryRepository libraryRepository)
+        public static IWebHostEnvironment _webHostEnvironment;
+        public TeacherDetails(ILibraryRepository libraryRepository, IWebHostEnvironment webHostEnvironment)
         {
             _libraryRepository = libraryRepository;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpPost]
         [Route("insert-newteacher")]
-        public async Task<IActionResult> Insert(TeacherDetail teacherdetail)
+        public async Task<IActionResult> Insert()
         {
             try
             {
-                await _libraryRepository.Insert(teacherdetail);
+
+                IFormFile files = Request.Form.Files[0];
+                string path = _webHostEnvironment.WebRootPath + "\\Teacher\\";
+                string ext = Path.GetExtension(files.FileName).ToLowerInvariant();
+                string fileName = DateTime.UtcNow.AddMinutes(345).ToString("yyyyMMddHHmmssffff") + ext;
+                using (FileStream fileStream = System.IO.File.Create(path + files.FileName))
+                {
+                    await files.CopyToAsync(fileStream);
+                }
+
+                TeacherDetail teacherDetail = new TeacherDetail();
+                teacherDetail.FirstName = HttpContext.Request.Form["FirstName"];
+                teacherDetail.LastName = HttpContext.Request.Form["LastName"];
+                teacherDetail.Department = int.Parse(HttpContext.Request.Form["Id"]);
+                teacherDetail.Email = HttpContext.Request.Form["Email"];
+                teacherDetail.ContactNumber = HttpContext.Request.Form["Contact"];
+                teacherDetail.ImagePath = fileName;
+                await _libraryRepository.Insert(teacherDetail);
+
+
+
                 return Ok("New Teacher has been successfully added.");
             }
             catch (Exception ex)
@@ -39,8 +64,8 @@ namespace LibraryManagement.Controllers
         {
             try
             {
-                IEnumerable<TeacherDetail> TeacherDetails = await _libraryRepository.GetAllTeacher();
-                return Ok(TeacherDetails);
+                IEnumerable<TeacherDetail> teacherDetails = await _libraryRepository.GetAllTeacher();
+                return Ok(teacherDetails);
             }
             catch (Exception ex)
             {

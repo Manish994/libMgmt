@@ -29,7 +29,9 @@
 		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Images\" />
+	  <Folder Include="wwwroot\Book\" />
+	  <Folder Include="wwwroot\Student\" />
+	  <Folder Include="wwwroot\Teacher\" />
 	</ItemGroup>
 	<Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
 		<Exec WorkingDirectory="$(SpaRoot)" Command="yarn install" />

@@ -25,13 +25,13 @@ namespace LibraryManagement
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-           
+
         }
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<LibraryDBContext>();
-            
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
@@ -49,7 +49,8 @@ namespace LibraryManagement
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("OnlyNonBlockedCustomer", policy => {
+                options.AddPolicy("OnlyNonBlockedCustomer", policy =>
+                {
                     policy.Requirements.Add(new UserBlockedStatusRequirement(false));
 
                 });
@@ -85,7 +86,7 @@ namespace LibraryManagement
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-            
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
@@ -100,7 +101,7 @@ namespace LibraryManagement
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
-           
+
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";

@@ -51,7 +51,7 @@ namespace LibraryManagement.Controllers
 
                 return Ok("All the files are successfully uploaded.");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return StatusCode(500, $"Error: {ex}");
             }
