@@ -20,9 +20,15 @@
           <q-input label="Last Name" v-model="addNewStudent.lastName"
             ><template v-slot:append> <q-icon name="person" /> </template
           ></q-input>
-          <q-input label="Department" v-model="addNewStudent.branch"
-            ><template v-slot:append> <q-icon name="border_color" /> </template
-          ></q-input>
+          <q-select
+            square
+            outlined
+            v-model="selectedDepartment"
+            :options="allDepartment"
+            option-label="name"
+            label="Select Department"
+          />
+         
           <q-input label="E-Mail" v-model="addNewStudent.email"
             ><template v-slot:append> <q-icon name="email" /> </template
           ></q-input>
@@ -82,7 +88,7 @@
           <th class="text-left">Student_ID</th>
           <th class="text-left">First_Name</th>
           <th class="text-left">Last_Name</th>
-          <th class="text-left">Branch</th>
+          <th class="text-left">Department</th>
           <th class="text-left">Email</th>
           <th class="text-left">Contact_Number</th>
           <th class="text-left">Address</th>
@@ -94,7 +100,7 @@
           <td>{{ user.id }}</td>
           <td>{{ user.firstName }}</td>
           <td>{{ user.lastName }}</td>
-          <td>{{ user.branch }}</td>
+          <td>{{ user.department.name }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.contactNumber }}</td>
           <td>{{ user.address }}</td>
@@ -128,6 +134,8 @@ export default {
   data() {
     return {
       students: [],
+      allDepartment: [],
+      selectedDepartment: null,
       addNewStudent: {
         firstName: "",
         lastName: "",
@@ -150,6 +158,7 @@ export default {
   },
   methods: {
     getStudents: async function () {
+      let vm = this;
       try {
         vm.$q.loading.show();
         const response = await vm.$axios.get("get-AllStudents");
@@ -158,7 +167,17 @@ export default {
       } catch (error) {
         vm.$q.loading.hide();
       }
+    },
+    getAllDepartment: async function () {
       let vm = this;
+      try {
+        vm.$q.loading.show();
+        const response = await vm.$axios.get("All-Department");
+        vm.$q.loading.hide();
+        vm.allDepartment = response.data;
+      } catch (error) {
+        vm.$q.loading.hide();
+      }
     },
     onUpdate: async function (id) {
       let vm = this;
@@ -236,9 +255,14 @@ export default {
   },
   async mounted() {
     let vm = this;
-    vm.$q.loading.show();
-    await vm.getStudents();
-    vm.$q.loading.hide();
+    try {
+      vm.$q.loading.show();
+      await vm.getStudents();
+      await vm.getAllDepartment();
+      vm.$q.loading.hide();
+    } catch (error) {
+      vm.$q.loading.hide();
+    }
   },
 };
 </script>

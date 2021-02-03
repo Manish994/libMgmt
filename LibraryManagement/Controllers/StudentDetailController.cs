@@ -31,6 +31,21 @@ namespace LibraryManagement.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet]
+        [Route("All-Department")]
+        public async Task<IActionResult> All_Department()
+        {
+            try
+            {
+                IEnumerable<Department> objDepartment= await _libraryRepository.All_Department();
+                return Ok(objDepartment);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpPost]
         [Route("insert-newStudent")]

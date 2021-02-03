@@ -16,6 +16,7 @@ namespace LibraryManagement.Repositories
         Task<IEnumerable<TeacherDetail>> GetAllTeacher();
         Task<IEnumerable<Department>> GetAllDepartment();
         Task<IEnumerable<Department>> Department();
+        Task<IEnumerable<Department>> All_Department();
         Task<IEnumerable<BookDetail>> GetAllBooks();
 
         Task DelById(TeacherDetail teacherdetail);
@@ -50,6 +51,11 @@ namespace LibraryManagement.Repositories
         }
 
         public async Task<IEnumerable<Department>> Department()
+        {
+            return await _LibraryDBContext.Departments.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Department>> All_Department()
         {
             return await _LibraryDBContext.Departments.ToListAsync();
         }
