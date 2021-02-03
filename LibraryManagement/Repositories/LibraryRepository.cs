@@ -108,7 +108,11 @@ namespace LibraryManagement.Repositories
 
         public async Task<IEnumerable<StudentDetail>> GetAllStudent()
         {
-            return await _LibraryDBContext.StudentDetails.ToListAsync();
+            return await _LibraryDBContext
+                .StudentDetails
+                .Include(x => x.Department)
+                .Include(y => y.Book)
+                .ToListAsync();
         }
 
         public async Task InsertNewStudent(StudentDetail studentdetail)

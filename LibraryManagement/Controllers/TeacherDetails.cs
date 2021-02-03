@@ -97,8 +97,11 @@ namespace LibraryManagement.Controllers
         [Route("saveUpdate-TeacherDetails")]
         public async Task<IActionResult> updateInsert(TeacherDetail teacherdetail)
         {
+            var imgNmae = Guid.NewGuid().ToString();
+
             try
             {
+                teacherdetail.DepartmentId = teacherdetail.Department.Id;
                 await _libraryRepository.updateInsert(teacherdetail);
                 return Ok("Successfully Updated");
             }

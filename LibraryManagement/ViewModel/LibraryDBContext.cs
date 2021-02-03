@@ -102,13 +102,23 @@ namespace LibraryManagement.ViewModel
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.ImagePath)
+                entity.Property(e => e.ImageName)
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.LastName)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Book)
+                    .WithMany(p => p.StudentDetails)
+                    .HasForeignKey(d => d.BookId)
+                    .HasConstraintName("FK_StudentDetail_Book");
+
+                entity.HasOne(d => d.Department)
+                    .WithMany(p => p.StudentDetails)
+                    .HasForeignKey(d => d.DepartmentId)
+                    .HasConstraintName("FK_StudentDetail_Department");
             });
 
             modelBuilder.Entity<TeacherDetail>(entity =>

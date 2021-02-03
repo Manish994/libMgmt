@@ -11,10 +11,14 @@ namespace LibraryManagement.ViewModel
         public int? CollegeRollNo { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int? Department { get; set; }
+        public int? DepartmentId { get; set; }
         public string Email { get; set; }
         public string ContactNumber { get; set; }
         public string Address { get; set; }
-        public string ImagePath { get; set; }
+        public string ImageName { get; set; }
+        public int? BookId { get; set; }
+
+        public virtual BookDetail Book { get; set; }
+        public virtual Department Department { get; set; }
     }
 }
