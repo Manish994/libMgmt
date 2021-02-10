@@ -14,6 +14,9 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
+          <q-input label="Roll Number" v-model="addNewStudent.collegeRollNo"
+            ><template v-slot:append> <q-icon name="person" /> </template
+          ></q-input>
           <q-input label="First Name" v-model="addNewStudent.firstName"
             ><template v-slot:append> <q-icon name="person" /> </template
           ></q-input>
@@ -23,12 +26,12 @@
           <q-select
             square
             outlined
-            v-model="selectedDepartment"
-            :options="allDepartment"
+            v-model="addNewStudent.stdDepartment"
+            :options="studentDepInfo"
             option-label="name"
             label="Select Department"
           />
-         
+
           <q-input label="E-Mail" v-model="addNewStudent.email"
             ><template v-slot:append> <q-icon name="email" /> </template
           ></q-input>
@@ -41,8 +44,8 @@
         </q-card-section>
 
         <q-card-actions align="right" class="bg-white text-teal">
-          <q-btn flat label="SAVE" v-on:click="saveNewStudent" />
-          <q-btn flat label="CANCEL" v-close-popup />
+          <q-btn push label="SAVE" v-on:click="saveNewStudent" />
+          <q-btn push label="CANCEL" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -60,9 +63,15 @@
           <q-input label="Last Name" v-model="addNewStudentNew.lastName"
             ><template v-slot:append> <q-icon name="person" /> </template
           ></q-input>
-          <q-input label="Branch" v-model="addNewStudentNew.branch"
-            ><template v-slot:append> <q-icon name="border_color" /> </template
-          ></q-input>
+          <q-select
+            square
+            outlined
+            v-model="addNewStudentNew.department"
+            :options="studentDepInfo"
+            option-label="name"
+            label="Select Department"
+            option-value="id"
+          />
           <q-input label="E-Mail" v-model="addNewStudentNew.email"
             ><template v-slot:append> <q-icon name="email" /> </template
           ></q-input>
@@ -82,6 +91,7 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
     <q-markup-table>
       <thead>
         <tr>
@@ -97,7 +107,7 @@
       </thead>
       <tbody>
         <tr v-for="user in students" v-bind:key="user.id">
-          <td>{{ user.id }}</td>
+          <td>{{ user.collegeRollNo }}</td>
           <td>{{ user.firstName }}</td>
           <td>{{ user.lastName }}</td>
           <td>{{ user.department.name }}</td>
@@ -135,29 +145,31 @@ export default {
     return {
       students: [],
       allDepartment: [],
-      selectedDepartment: null,
+      studentDepInfo: [],
+      saveAll: null,
       addNewStudent: {
+        collegeRollNo: "",
         firstName: "",
         lastName: "",
-        branch: "",
+        stdDepartment: "",
         email: "",
         contactNumber: "",
-        address: "",
+        address: ""
       },
       openStudentEditDialog: false,
       addNewStudentNew: {
         firstName: "",
         lastName: "",
-        branch: "",
+        department: null,
         email: "",
         contactNumber: "",
-        address: "",
+        address: ""
       },
-      openStudentAddDialog: false,
+      openStudentAddDialog: false
     };
   },
   methods: {
-    getStudents: async function () {
+    getStudents: async function() {
       let vm = this;
       try {
         vm.$q.loading.show();
@@ -168,7 +180,7 @@ export default {
         vm.$q.loading.hide();
       }
     },
-    getAllDepartment: async function () {
+    getAllDepartment: async function() {
       let vm = this;
       try {
         vm.$q.loading.show();
@@ -179,13 +191,14 @@ export default {
         vm.$q.loading.hide();
       }
     },
-    onUpdate: async function (id) {
+    onUpdate: async function(id) {
       let vm = this;
       let response = await vm.$axios.get(`getStudentsById/` + id);
+      vm.getStudentDepartment();
       this.openStudentEditDialog = true;
       vm.addNewStudentNew = response.data;
     },
-    saveUpdateStudent: async function () {
+    saveUpdateStudent: async function() {
       let vm = this;
       let response = await vm.$axios.post(
         "saveUpdate-StudentDetails",
@@ -193,57 +206,59 @@ export default {
       );
       vm.$q.notify({
         message: response.data,
-        color: "green",
+        color: "green"
       });
       vm.openStudentEditDialog = false;
       vm.restetFormUpdate();
       vm.getStudents();
     },
-    onRemove: async function (user) {
+    onRemove: async function(user) {
       let vm = this;
       vm.$q
         .dialog({
           title: "Confim",
           message: "Are you confirm to delete?",
           cancel: true,
-          persistent: true,
+          persistent: true
         })
         .onOk(async () => {
           let response = await vm.$axios.post("del-Student", user);
           await vm.getStudents();
           vm.$q.notify({
             message: response.data,
-            color: "red",
+            color: "red"
           });
         });
     },
-    saveNewStudent: async function () {
+    saveNewStudent: async function() {
       let vm = this;
-      let response = await vm.$axios.post(
-        "insert-newStudent",
-        vm.addNewStudent
-      );
+      alert("Hello");
+      vm.addNewStudent.departmentId = vm.addNewStudent.stdDepartment.id;
+      let response = await vm.$axios.post("insert-newStudent", vm.addNewStudent);
       vm.$q.notify({
         message: response.data,
-        color: "green",
+        color: "green"
       });
       vm.openStudentAddDialog = false;
       vm.restetForm();
       vm.getStudents();
     },
-    onAddStudent: function () {
-      this.openStudentAddDialog = true;
-    },
-    restetForm: function () {
+    onAddStudent: function() {
       let vm = this;
+      this.openStudentAddDialog = true;
+      vm.getStudentDepartment();
+    },
+    restetForm: function() {
+      let vm = this;
+      vm.addNewStudent.collegeRollNo="";
       vm.addNewStudent.firstName = "";
       vm.addNewStudent.lastName = "";
-      vm.addNewStudent.branch = "";
+      vm.addNewStudent.stdDepartment = "";
       vm.addNewStudent.email = "";
       vm.addNewStudent.contactNumber = "";
       vm.addNewStudent.address = "";
     },
-    restetFormUpdate: function () {
+    restetFormUpdate: function() {
       let vm = this;
       vm.addNewStudentNew.firstName = "";
       vm.addNewStudentNew.lastName = "";
@@ -252,6 +267,17 @@ export default {
       vm.addNewStudentNew.contactNumber = "";
       vm.addNewStudentNew.address = "";
     },
+    getStudentDepartment: async function() {
+      let vm = this;
+      try {
+        vm.$q.loading.show();
+        const response = await vm.$axios.get("department");
+        vm.studentDepInfo = response.data;
+        vm.$q.loading.hide();
+      } catch (error) {
+        vm.$q.loading.hide();
+      }
+    }
   },
   async mounted() {
     let vm = this;
@@ -263,6 +289,6 @@ export default {
     } catch (error) {
       vm.$q.loading.hide();
     }
-  },
+  }
 };
 </script>

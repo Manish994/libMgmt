@@ -22,12 +22,16 @@ const routes = [
   },
 
   {
+    path: '/test',
+    component: () => import('pages/test.vue')
+  },
+
+  {
     path: '/student',
     component: () => import('layouts/studentlayout.vue'),
     children: [
       { path: '', component: () => import('pages/studentprofile.vue') },
       { path: 'request/book', component: () => import('pages/studentbookdetails.vue') },
-      { path: 'request/image', component: () => import('pages/imageUpload.vue') },
     ]
   },
 

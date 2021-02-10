@@ -24,8 +24,8 @@
               lazy-rules
               color="teal"
               :rules="[
-                (val) =>
-                  (val !== null && val !== '') || 'Please Provide First Name',
+                val =>
+                  (val !== null && val !== '') || 'Please Provide First Name'
               ]"
               ><template v-slot:append> <q-icon name="person" /> </template
             ></q-input>
@@ -35,8 +35,8 @@
               lazy-rules
               color="teal"
               :rules="[
-                (val) =>
-                  (val !== null && val !== '') || 'Please Provide Last Name',
+                val =>
+                  (val !== null && val !== '') || 'Please Provide Last Name'
               ]"
               ><template v-slot:append> <q-icon name="person" /> </template
             ></q-input>
@@ -56,9 +56,9 @@
               lazy-rules
               color="teal"
               :rules="[
-                (val) =>
+                val =>
                   (val !== null && val !== '') ||
-                  'Please Provide Valid Email-Address',
+                  'Please Provide Valid Email-Address'
               ]"
               ><template v-slot:append> <q-icon name="email" /> </template
             ></q-input>
@@ -68,18 +68,31 @@
               lazy-rules
               color="teal"
               :rules="[
-                (val) =>
-                  (val !== null && val !== '') || 'Please Provide Phone Number',
+                val =>
+                  (val !== null && val !== '') || 'Please Provide Phone Number'
               ]"
               ><template v-slot:append> <q-icon name="phone" /> </template
             ></q-input>
 
-            <q-file filled v-model="file" label="File Upload"> </q-file>
+            <q-file multiple filled v-model="file" label="File Upload"> </q-file>
+
+             <q-input
+              label="Citizenship NO"
+              v-model="addNewTeacher.citizenshipNo"
+              lazy-rules
+              color="teal"
+              :rules="[
+                val =>
+                  (val !== null && val !== '') || 'Please Provide Phone Number'
+              ]"
+              ><template v-slot:append> <q-icon name="phone" /> </template
+            ></q-input>
+
           </q-card-section>
 
           <q-card-actions align="right" class="bg-white text-teal">
-            <q-btn flat label="SAVE" v-on:click="saveNewTeacher" />
-            <q-btn flat label="CANCEL" v-close-popup />
+            <q-btn push label="SAVE" v-on:click="saveNewTeacher" />
+            <q-btn push label="CANCEL" v-close-popup />
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -97,8 +110,8 @@
               lazy-rules
               color="teal"
               :rules="[
-                (val) =>
-                  (val !== null && val !== '') || 'Please Provide First Name',
+                val =>
+                  (val !== null && val !== '') || 'Please Provide First Name'
               ]"
               ><template v-slot:append> <q-icon name="person" /> </template
             ></q-input>
@@ -108,8 +121,8 @@
               lazy-rules
               color="teal"
               :rules="[
-                (val) =>
-                  (val !== null && val !== '') || 'Please Provide Last Name',
+                val =>
+                  (val !== null && val !== '') || 'Please Provide Last Name'
               ]"
               ><template v-slot:append> <q-icon name="person" /> </template
             ></q-input>
@@ -128,9 +141,9 @@
               lazy-rules
               color="teal"
               :rules="[
-                (val) =>
+                val =>
                   (val !== null && val !== '') ||
-                  'Please Provide Valid Email-Address',
+                  'Please Provide Valid Email-Address'
               ]"
               ><template v-slot:append> <q-icon name="email" /> </template
             ></q-input>
@@ -140,12 +153,11 @@
               lazy-rules
               color="teal"
               :rules="[
-                (val) =>
-                  (val !== null && val !== '') || 'Please Provide Phone Number',
+                val =>
+                  (val !== null && val !== '') || 'Please Provide Phone Number'
               ]"
               ><template v-slot:append> <q-icon name="phone" /> </template
             ></q-input>
-
           </q-card-section>
 
           <q-card-actions align="right" class="bg-white text-teal">
@@ -154,7 +166,7 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
-      <q-markup-table>
+      <q-markup-table style="width:100%" class="table table-bordered">
         <thead>
           <tr>
             <th class="text-left">Teacher_ID</th>
@@ -163,7 +175,7 @@
             <th class="text-left">Department</th>
             <th class="text-left">Email</th>
             <th class="text-left">Contact_Number</th>
-            <!-- <th class="text-left">Address</th> -->
+            <th class="text-left">Citizenshio NO</th>
             <th class="text-left">Action</th>
           </tr>
         </thead>
@@ -175,7 +187,7 @@
             <td>{{ user.department.name }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.contactNumber }}</td>
-            <!-- <td>{{ user.address }}</td> -->
+            <td>{{ user.citizenshipNo }}</td>
             <td>
               <q-btn
                 v-on:click="onUpdate(user.id)"
@@ -218,26 +230,26 @@ export default {
         branch: "",
         email: "",
         contactNumber: "",
+        citizenshipNo:"",
       },
       addNewTeacherNew: {
         firstName: "",
         lastName: "",
         department: null,
         email: "",
-        contactNumber: "",
+        contactNumber: ""
       },
-      openEditTeacherDialog: false,
+      openEditTeacherDialog: false
     };
   },
   methods: {
-    onUpdate: async function (id) {
+    onUpdate: async function(id) {
       let vm = this;
       let response = await vm.$axios.get(`teachers/` + id);
-      console.log(response.data);
       this.openEditTeacherDialog = true;
       vm.addNewTeacherNew = response.data;
     },
-    saveUpdateTeacher: async function () {
+    saveUpdateTeacher: async function() {
       let vm = this;
       let response = await vm.$axios.post(
         "saveUpdate-TeacherDetails",
@@ -245,52 +257,69 @@ export default {
       );
       vm.$q.notify({
         message: response.data,
-        color: "green",
+        color: "green"
       });
       vm.restetFormUpdate();
       vm.openEditTeacherDialog = false;
       this.getTeachers();
     },
-    onRemove: async function (user) {
+    onRemove: async function(user) {
       let vm = this;
       vm.$q
         .dialog({
           title: "Confim",
           message: "Are you confirm to delete?",
           cancel: true,
-          persistent: true,
+          persistent: true
         })
         .onOk(async () => {
           let response = await vm.$axios.post("del-Teacher", user);
           await vm.getTeachers();
           vm.$q.notify({
             message: response.data,
-            color: "red",
+            color: "red"
           });
         });
     },
-    saveNewTeacher: async function () {
+    saveNewTeacher: async function() {
       let vm = this;
       let formData = new FormData();
-      formData.append("file", vm.file);
+      formData.append("files", vm.file);
       formData.append("FirstName", vm.addNewTeacher.firstName);
       formData.append("LastName", vm.addNewTeacher.lastName);
       formData.append("Id", vm.selectedDepartment.id);
       formData.append("Email", vm.addNewTeacher.email);
       formData.append("Contact", vm.addNewTeacher.contactNumber);
-      let response = await vm.$axios.post("insert-newteacher", formData);
+      formData.append("CitizenshipNo", vm.addNewTeacher.citizenshipNo);
+
+      console.log(vm.file);
+
+      // let response = await vm.$axios.post("insert-newteacher", formData, {
+      //   headers:{
+      //     'Content-Type': 'multipart/form-data'
+      //   }
+      // });
+      vm.$axios({
+        method: 'post',
+        url: 'insert-newteacher',
+        formData,
+        headers:{'Content-Type': 'multipart/form-data'}
+      }).then(function() {
+
+      });
+
       vm.$q.notify({
         message: response.data,
-        color: "green",
+        color: "green"
       });
       vm.openTeacherAddDialog = false;
       vm.restetForm();
       vm.getTeachers();
     },
-    onAddTeacher: async function () {
+    onAddTeacher: async function() {
       this.openTeacherAddDialog = true;
     },
-    restetForm: function () {
+    restetForm: function() {
       let vm = this;
       vm.addNewTeacher.firstName = "";
       vm.addNewTeacher.lastName = "";
@@ -298,8 +327,9 @@ export default {
       vm.addNewTeacher.email = "";
       vm.addNewTeacher.contactNumber = "";
       vm.file = null;
+      vm.addNewTeacher.citizenshipNo = "";
     },
-    restetFormUpdate: function () {
+    restetFormUpdate: function() {
       let vm = this;
       vm.addNewTeacherNew.firstName = "";
       vm.addNewTeacherNew.lastName = "";
@@ -308,7 +338,7 @@ export default {
       vm.addNewTeacherNew.contactNumber = "";
       vm.addNewTeacherNew.address = "";
     },
-    getTeachers: async function () {
+    getTeachers: async function() {
       let vm = this;
       try {
         vm.$q.loading.show();
@@ -320,18 +350,17 @@ export default {
       }
     },
 
-    getTeacherDepartment: async function () {
+    getTeacherDepartment: async function() {
       let vm = this;
       try {
         vm.$q.loading.show();
         const response = await vm.$axios.get("department");
-        console.log(response);
         vm.teacherDepInfo = response.data;
         vm.$q.loading.hide();
       } catch (error) {
         vm.$q.loading.hide();
       }
-    },
+    }
   },
   async mounted() {
     let vm = this;
@@ -339,6 +368,6 @@ export default {
     await vm.getTeachers();
     await vm.getTeacherDepartment();
     vm.$q.loading.hide();
-  },
+  }
 };
 </script>

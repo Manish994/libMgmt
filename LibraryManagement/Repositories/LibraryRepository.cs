@@ -14,10 +14,11 @@ namespace LibraryManagement.Repositories
         Task Insert(BookDetail bookdetail);
         Task<IEnumerable<BookDetail>> GetAll();
         Task<IEnumerable<TeacherDetail>> GetAllTeacher();
+        Task<IEnumerable<RequestBook>> ResponseRequest();
         Task<IEnumerable<Department>> GetAllDepartment();
         Task<IEnumerable<Department>> Department();
         Task<IEnumerable<Department>> All_Department();
-        Task<IEnumerable<BookDetail>> GetAllBooks();
+        Task<IEnumerable<BookDetail>> ResponseAll();
 
         Task DelById(TeacherDetail teacherdetail);
         Task<TeacherDetail> GetById(int id);
@@ -31,6 +32,11 @@ namespace LibraryManagement.Repositories
         Task updateInsertStudent(StudentDetail studentdetail);
         Task DelStudentsById(StudentDetail studentdetail);
         Task<IEnumerable<StudentDetail>> GetDetailStudent();
+
+        Task<StudentDetail> GetStudentDetailByRollNumber(int rollNumber);
+        Task<BookDetail> BookById(int rollNumber);
+        //Task<BookDetail> GetBookByid(int rollNumber);
+        Task InsertRequest(RequestBook requestBook);
     }
     public class LibraryRepository : ILibraryRepository
     {
@@ -42,6 +48,11 @@ namespace LibraryManagement.Repositories
         public async Task Insert(TeacherDetail teacherdetail)
         {
             await _LibraryDBContext.TeacherDetails.AddAsync(teacherdetail);
+            await _LibraryDBContext.SaveChangesAsync();
+        }
+        public async Task InsertRequest(RequestBook requestBook)
+        {
+            await _LibraryDBContext.RequestBooks.AddAsync(requestBook);
             await _LibraryDBContext.SaveChangesAsync();
         }
 
@@ -65,6 +76,12 @@ namespace LibraryManagement.Repositories
             return await _LibraryDBContext.TeacherDetails.Include(x => x.Department).ToListAsync();
         }
 
+        public async Task<IEnumerable<RequestBook>> ResponseRequest()
+        {
+            return await _LibraryDBContext.RequestBooks.ToListAsync();
+        }
+
+
         public async Task<IEnumerable<Department>> GetAllDepartment()
         {
             return await _LibraryDBContext.Departments.ToListAsync();
@@ -83,7 +100,8 @@ namespace LibraryManagement.Repositories
 
         public async Task<TeacherDetail> GetById(int id)
         {
-            return await _LibraryDBContext.TeacherDetails.Include(x => x.Department).FirstOrDefaultAsync(x => x.Id == id);
+            return await _LibraryDBContext
+                .TeacherDetails.Include(x => x.Department).FirstOrDefaultAsync(x => x.Id == id);
            
         }
 
@@ -128,7 +146,7 @@ namespace LibraryManagement.Repositories
         }
         public async Task<StudentDetail> getStudentsById(int id)
         {
-            return await _LibraryDBContext.StudentDetails.FirstOrDefaultAsync(x => x.Id == id);
+            return await _LibraryDBContext.StudentDetails.Include(x => x.Department).FirstOrDefaultAsync(x => x.Id == id);
         }
         public async Task updateInsertStudent(StudentDetail studentdetail)
         {
@@ -146,9 +164,23 @@ namespace LibraryManagement.Repositories
             return await _LibraryDBContext.StudentDetails.ToListAsync();
         }
 
-        public Task<IEnumerable<BookDetail>> GetAllBooks()
+        public async Task<IEnumerable<BookDetail>> ResponseAll()
         {
-            throw new NotImplementedException();
+            return await _LibraryDBContext.BookDetails.ToListAsync();
+        }
+
+        public async Task<StudentDetail> GetStudentDetailByRollNumber(int rollNumber)
+        { 
+            return await _LibraryDBContext.StudentDetails.Include(x => x.Department).FirstOrDefaultAsync(x => x.Id == rollNumber);
+        }
+
+        //public async Task<BookDetail> GetBookByid(int rollNumber)
+        //{
+        //    return await _LibraryDBContext.BookDetails.FirstOrDefaultAsync(x => x.Id == rollNumber);
+        //}
+        public async Task<BookDetail> BookById(int rollNumber)
+        {
+            return await _LibraryDBContext.BookDetails.FirstOrDefaultAsync(x => x.Id == rollNumber);
         }
     }
 }

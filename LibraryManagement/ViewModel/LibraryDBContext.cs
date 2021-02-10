@@ -20,6 +20,7 @@ namespace LibraryManagement.ViewModel
         public virtual DbSet<BookDetail> BookDetails { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Login> Logins { get; set; }
+        public virtual DbSet<RequestBook> RequestBooks { get; set; }
         public virtual DbSet<StudentDetail> StudentDetails { get; set; }
         public virtual DbSet<TeacherDetail> TeacherDetails { get; set; }
 
@@ -82,6 +83,49 @@ namespace LibraryManagement.ViewModel
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<RequestBook>(entity =>
+            {
+                entity.ToTable("RequestBook");
+
+                entity.Property(e => e.Action).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.BookAuthor)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.BookId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.BookName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.CollegeRollNo)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DepartmentName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.DueDate).HasColumnType("date");
+
+                entity.Property(e => e.Email)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.FirstName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.IssueDate).HasColumnType("date");
+
+                entity.Property(e => e.LastName)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
             modelBuilder.Entity<StudentDetail>(entity =>
             {
                 entity.ToTable("StudentDetail");
@@ -124,6 +168,10 @@ namespace LibraryManagement.ViewModel
             modelBuilder.Entity<TeacherDetail>(entity =>
             {
                 entity.ToTable("TeacherDetail");
+
+                entity.Property(e => e.CitizenshipNo)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.ContactNumber)
                     .HasMaxLength(15)

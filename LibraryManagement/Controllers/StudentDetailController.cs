@@ -53,6 +53,7 @@ namespace LibraryManagement.Controllers
         {
             try
             {
+                //studentdetail.DepartmentId = studentdetail.DepartmentId.id;
                 await _libraryRepository.InsertNewStudent(studentdetail);
                 return Ok("New Student has been inserted.");
             }
@@ -77,6 +78,7 @@ namespace LibraryManagement.Controllers
         {
             try
             {
+                studentdetail.DepartmentId=studentdetail.Department.Id;
                 await _libraryRepository.updateInsertStudent(studentdetail);
                 return Ok("Successfully Updated");
             }
@@ -94,6 +96,20 @@ namespace LibraryManagement.Controllers
 
             await _libraryRepository.DelStudentsById(studentdetail);
             return Ok("Student has been successfully deleted");
+        }
+
+        [HttpGet , Route("student/GetStudentByid")]
+        public async Task<IActionResult> GetStudentByid(int id)
+        {
+            try
+            {
+                return Ok(_libraryRepository.GetStudentDetailByRollNumber(id));
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
         }
 
     }

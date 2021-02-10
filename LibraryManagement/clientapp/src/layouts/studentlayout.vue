@@ -58,29 +58,31 @@
               <div>Student Name</div>
             </div>
           </q-item>
-          <q-item-label header class="text-grey-6">
+          <q-item-label header class="text-h6">
             Student Panel
           </q-item-label>
           <q-item to="/student" active-class="q-item-no-link-highlighting">
             <q-item-section avatar>
-              <q-icon name="dashboard" />
+              <q-icon name="person" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>Student__Profile</q-item-label>
+              <q-item-label class="text-h6">STUDENT</q-item-label>
             </q-item-section>
           </q-item>
+          <q-linear-progress color="grey" style="height: 2px" />
           <q-item
             to="/student/request/book"
             active-class="q-item-no-link-highlighting"
           >
             <q-item-section avatar>
-              <q-icon name="dashboard" />
+              <q-icon name="book" />
             </q-item-section>
             <q-item-section>
-              <q-item-label>BOOK__DETAILS</q-item-label>
+              <q-item-label class="text-h6">BOOK</q-item-label>
             </q-item-section>
           </q-item>
-           <q-item
+          <q-linear-progress color="grey" style="height: 2px" />
+          <!-- <q-item
             to="student/request/image"
             active-class="q-item-no-link-highlighting"
           >
@@ -90,7 +92,7 @@
             <q-item-section>
               <q-item-label>STUDENT_IMAGE</q-item-label>
             </q-item-section>
-          </q-item>
+          </q-item> -->
         </q-list>
       </q-scroll-area>
     </q-drawer>
@@ -99,7 +101,7 @@
     </q-page-container>
   </q-layout>
 </template>
- 
+
 <script>
 export default {
   name: "studentlayout",

@@ -163,7 +163,7 @@ export default {
     getBooks: async function() {
       let vm = this;
       vm.$q.loading.show();
-      const response = await vm.$axios.get("getallbooks");
+      const response = await vm.$axios.get("Response-All");
       vm.$q.loading.hide();
       vm.booksDetails = response.data;
     },

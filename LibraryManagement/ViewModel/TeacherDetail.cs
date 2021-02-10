@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
@@ -15,7 +17,11 @@ namespace LibraryManagement.ViewModel
         public string Email { get; set; }
         public string ContactNumber { get; set; }
         public string ImageName { get; set; }
+        public string CitizenshipNo { get; set; }
 
         public virtual Department Department { get; set; }
+
+        [NotMapped]
+        public IEnumerable<IFormFile> Files { get; set; }
     }
 }
