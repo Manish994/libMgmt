@@ -28,34 +28,38 @@
           <td>{{ book.bookAuthor }}</td>
           <td>{{ formatDate(book.issueDate) }}</td>
           <td>{{ formatDate(book.dueDate) }}</td>
-          <td><q-btn
-                v-on:click="btnApproved(book.id)"
-                color="primary"
-                icon-right="Ok"
-                no-caps
-                flat
-                dense
-              />
-              <q-btn
-                v-on:click="btnCancel(book.id)"
-                color="negative"
-                icon-right="cancel"
-                no-caps
-                flat
-                dense
-              />d</td>
+          <td>
+            <q-btn
+              v-on:click="btnApproved(book)"
+              color="primary"
+              icon-right="check_circle"
+              no-caps
+              flat
+              dense
+              v-if="book.action == null || book.action == 1"
+            />
+            <q-btn
+              v-on:click="btnCancel(book)"
+              color="negative"
+              icon-right="cancel"
+              no-caps
+              flat
+              dense
+              v-if="book.action == null || book.action == 0"
+            />
+          </td>
         </tr>
       </tbody>
     </q-markup-table>
   </div>
 </template>
 <script>
-import moment from 'moment';
+import moment from "moment";
 export default {
   name: "studentbookdetails",
   data() {
     return {
-      RequestInfo: [],
+      RequestInfo: []
     };
   },
   methods: {
@@ -64,14 +68,31 @@ export default {
       let response = await vm.$axios.get("Response-Request");
       vm.RequestInfo = response.data;
     },
-    btnApproved : async function(id){
-      alert(id);
+    btnApproved: async function(book) {
+      let vm = this;
+      try {
+        let response = await vm.$axios.post("Approve-Request", book);
+        vm.$q.notify({
+          message: response.data,
+          color: "green"
+        });
+        vm.getRequestInfo();
+        
+      } catch (error) {}
     },
-    btnCancel:async function(id){
-      alert(id);
+    btnCancel: async function(book) {
+      let vm = this;
+      try {
+        let response = await vm.$axios.post("Cancel-Request",book)
+         vm.$q.notify({
+          message: response.data,
+          color: "negative"
+        });
+         vm.getRequestInfo();
+      } catch (error) {}
     },
-    formatDate: function (input){
-      return moment(input).format("yyyy-MM-DD")
+    formatDate: function(input) {
+      return moment(input).format("yyyy-MM-DD");
     }
   },
   async mounted() {

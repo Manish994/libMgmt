@@ -6,7 +6,7 @@
       v-on:click="showDialog"
       class="q-mb-md q-mr-md"
     ></q-btn>
-    <q-dialog v-model="bookDialog">
+    <q-dialog v-model="bookDialog" persistent>
       <q-card style="width: 700px; max-width: 80vw">
         <q-card-section>
           <div class="text-h6">Request Book</div>
@@ -14,8 +14,7 @@
 
         <q-card-section class="q-pt-none">
           <q-select
-            square
-            outlined
+            filled
             class="q-mb-md"
             v-model="collegeRollN"
             :options="studentInfo"
@@ -61,8 +60,7 @@
             ><template v-slot:append> <q-icon name="email" /> </template
           ></q-input>
           <q-select
-            square
-            outlined
+            filled
             class="q-mt-md"
             v-model="collegeBook"
             :options="getBookss"
@@ -151,30 +149,36 @@
           <td>{{ book.bookAuthor }}</td>
           <td>{{ formatDate(book.issueDate) }}</td>
           <td>{{ formatDate(book.dueDate) }}</td>
-          <td>{{ book.action == false ? 'Not Approved' : 'Approved' }}</td>
+          <td>{{ book.action == false ? "Not Approved" : "Approved" }}</td>
         </tr>
       </tbody>
     </q-markup-table>
   </div>
 </template>
 <script>
-import moment from 'moment';
+import moment from "moment";
 export default {
   name: "studentbookdetails",
   data() {
     return {
-      collegeBook: [],
+      //getRequestInfo()
       RequestInfo: [],
+
+      //getBookInfo()
       getBookss: [],
+      collegeBook: [],
+
+      //geStudents()
       studentInfo: [],
-      bookDialog: false,
       collegeRollN: [],
+
       bookDialog: false,
+      bookDialog: false,
+
       date: "",
       requestBook: {
         firstName: "",
         lastName: "",
-        branch: "",
         email: "",
         name: "",
         bookId: "",
@@ -183,6 +187,7 @@ export default {
     };
   },
   methods: {
+    //fetch student table. Inside student table exists departmentId.
     getStudents: async function() {
       let vm = this;
       try {
@@ -190,16 +195,18 @@ export default {
         const response = await vm.$axios.get("get-AllStudents");
         vm.studentInfo = response.data;
         vm.$q.loading.hide();
-        // vm.students = response.data;
       } catch (error) {
         vm.$q.loading.hide();
       }
     },
+    //fetch BookDetail table and display in dropdown list
     getBookInfo: async function() {
       let vm = this;
       const response = await vm.$axios.get("Response-All");
       vm.getBookss = response.data;
     },
+    //fetch student table with Id and filter student table and display related with Id
+    //Also fetch department table where departmentId is stored in student table and display departmentName related with Id.
     GetValue: async function() {
       let vm = this;
       let response = await vm.$axios.get(
@@ -210,6 +217,7 @@ export default {
       vm.requestBook.email = response.data.result.email;
       vm.requestBook.name = response.data.result.department.name;
     },
+    //fetch bookDetail table with Id and filter bookDetail table and display related with Id.
     GetValueBook: async function() {
       let vm = this;
       let filterData = await vm.$axios.get(
@@ -231,18 +239,24 @@ export default {
         vm.requestBook.authorName = "";
       } catch (error) {}
     },
-    showDateDialog: async function() {},
+    //fetch RequestBook table.
     getRequestInfo: async function() {
       let vm = this;
       let response = await vm.$axios.get("Response-Request");
       vm.RequestInfo = response.data;
     },
+    //show popup model and
+    //fetch CurrentDate from DateController.
     showDialog: async function() {
       let vm = this;
       vm.bookDialog = true;
-      let response =await vm.$axios.get("Current-Date");
-      vm.date=response.data;
+      await vm.getStudents();
+      await vm.getRequestInfo();
+      await vm.getBookInfo();
+      let response = await vm.$axios.get("Current-Date");
+      vm.date = response.data;
     },
+    //passing data into BookrequestController.
     bookRequest: async function() {
       let vm = this;
       try {
@@ -266,15 +280,19 @@ export default {
         await vm.getRequestInfo();
       } catch (error) {}
     },
-    formatDate: function (input){
-      return moment(input).format("yyyy-MM-DD")
+    //format Date using moment JS.
+    formatDate: function(input) {
+      return moment(input).format("yyyy-MM-DD");
     }
   },
   async mounted() {
     let vm = this;
     try {
+      //fetch student table and department table
       await vm.getStudents();
+      //fetch requestBook table
       await vm.getRequestInfo();
+      //fetch bookDetail table
       await vm.getBookInfo();
     } catch (error) {}
   }

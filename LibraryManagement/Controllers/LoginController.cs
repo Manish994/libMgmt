@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LibraryManagement.Interfaces;
 using LibraryManagement.Repositories;
 using LibraryManagement.Request;
+using LibraryManagement.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.Controllers
@@ -15,7 +16,6 @@ namespace LibraryManagement.Controllers
     public class LoginController : ControllerBase
     {
         private readonly ICustomerService customerService;
-
         public LoginController(ICustomerService customerService)
         {
             this.customerService = customerService;
@@ -26,6 +26,7 @@ namespace LibraryManagement.Controllers
         [Route("login")]
         public async Task<IActionResult> Signin(LoginRequest loginRequest)
         {
+            
             if (loginRequest == null || string.IsNullOrEmpty(loginRequest.Username) || string.IsNullOrEmpty(loginRequest.Password))
             {
                 return BadRequest("Missing login details");
@@ -38,6 +39,9 @@ namespace LibraryManagement.Controllers
             }
 
             return Ok(loginResponse);
+
         }
+
+        
     }
 }

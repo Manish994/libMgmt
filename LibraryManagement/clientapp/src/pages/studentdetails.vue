@@ -24,8 +24,8 @@
             ><template v-slot:append> <q-icon name="person" /> </template
           ></q-input>
           <q-select
-            square
-            outlined
+            filled
+            clearable
             v-model="addNewStudent.stdDepartment"
             :options="studentDepInfo"
             option-label="name"
@@ -64,8 +64,8 @@
             ><template v-slot:append> <q-icon name="person" /> </template
           ></q-input>
           <q-select
-            square
-            outlined
+            clearable
+            filled
             v-model="addNewStudentNew.department"
             :options="studentDepInfo"
             option-label="name"
@@ -234,7 +234,10 @@ export default {
       let vm = this;
       alert("Hello");
       vm.addNewStudent.departmentId = vm.addNewStudent.stdDepartment.id;
-      let response = await vm.$axios.post("insert-newStudent", vm.addNewStudent);
+      let response = await vm.$axios.post(
+        "insert-newStudent",
+        vm.addNewStudent
+      );
       vm.$q.notify({
         message: response.data,
         color: "green"
@@ -250,7 +253,7 @@ export default {
     },
     restetForm: function() {
       let vm = this;
-      vm.addNewStudent.collegeRollNo="";
+      vm.addNewStudent.collegeRollNo = "";
       vm.addNewStudent.firstName = "";
       vm.addNewStudent.lastName = "";
       vm.addNewStudent.stdDepartment = "";

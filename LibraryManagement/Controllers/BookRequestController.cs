@@ -62,5 +62,39 @@ namespace LibraryManagement.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("Approve-Request")]
+        public async Task<IActionResult> ResponseRequest(RequestBook objRequestBook)
+        {
+
+            if (objRequestBook.Action == null)
+            {
+                objRequestBook.Action = true;
+                await _libraryRepository.ResponseRequest(objRequestBook);
+            }
+            else
+            {
+                return BadRequest("You Already Approved Book Request !!!");
+            }
+            return Ok("Successfully Approved");
+            
+        }
+        [HttpPost]
+        [Route("Cancel-Request")]
+        public async Task<IActionResult> CancelRequest(RequestBook objRequestBook)
+        {
+
+            if (objRequestBook.Action == null)
+            {
+                objRequestBook.Action = false;
+                await _libraryRepository.CancelRequest(objRequestBook);
+            }
+            else
+            {
+                return BadRequest("You Already Cancelled Book Request !!!");
+            }
+            return Ok("Successfully Cancelled.");
+
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace LibraryManagement.Repositories
     public interface ILibraryRepository
     {
         Task Insert(TeacherDetail teacherdetail);
+        Task Signup(Login login);
         Task Insert(BookDetail bookdetail);
         Task<IEnumerable<BookDetail>> GetAll();
         Task<IEnumerable<TeacherDetail>> GetAllTeacher();
@@ -23,6 +24,8 @@ namespace LibraryManagement.Repositories
         Task DelById(TeacherDetail teacherdetail);
         Task<TeacherDetail> GetById(int id);
         Task updateInsert(TeacherDetail teacherdetail);
+        Task <RequestBook>ResponseRequest(RequestBook objRequestBook);
+        Task CancelRequest(RequestBook objRequestBook);
         Task DelBookById(BookDetail bookdetail);
         Task<BookDetail> GetBookById(int id);
         Task updateInsertBook(BookDetail bookdetail);
@@ -35,7 +38,6 @@ namespace LibraryManagement.Repositories
 
         Task<StudentDetail> GetStudentDetailByRollNumber(int rollNumber);
         Task<BookDetail> BookById(int rollNumber);
-        //Task<BookDetail> GetBookByid(int rollNumber);
         Task InsertRequest(RequestBook requestBook);
     }
     public class LibraryRepository : ILibraryRepository
@@ -48,6 +50,11 @@ namespace LibraryManagement.Repositories
         public async Task Insert(TeacherDetail teacherdetail)
         {
             await _LibraryDBContext.TeacherDetails.AddAsync(teacherdetail);
+            await _LibraryDBContext.SaveChangesAsync();
+        }
+        public async Task Signup(Login login)
+        {
+            await _LibraryDBContext.Logins.AddAsync(login);
             await _LibraryDBContext.SaveChangesAsync();
         }
         public async Task InsertRequest(RequestBook requestBook)
@@ -111,6 +118,19 @@ namespace LibraryManagement.Repositories
             _LibraryDBContext.TeacherDetails.Update(teacherdetail);
             await _LibraryDBContext.SaveChangesAsync();
 
+        }
+        public async Task<RequestBook> ResponseRequest(RequestBook objRequestBook)
+        {
+
+            _LibraryDBContext.RequestBooks.Update(objRequestBook);
+            await _LibraryDBContext.SaveChangesAsync();
+            return objRequestBook;
+
+        }
+        public async Task CancelRequest(RequestBook objRequestBook)
+        {
+            _LibraryDBContext.RequestBooks.Update(objRequestBook);
+            await _LibraryDBContext.SaveChangesAsync();
         }
 
         public async Task DelBookById(BookDetail bookdetail)
