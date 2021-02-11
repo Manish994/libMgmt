@@ -149,7 +149,8 @@
           <td>{{ book.bookAuthor }}</td>
           <td>{{ formatDate(book.issueDate) }}</td>
           <td>{{ formatDate(book.dueDate) }}</td>
-          <td>{{ book.action == false ? "Not Approved" : "Approved" }}</td>
+          <td v-if="book.action == null">Pending</td>
+          <td v-else>{{ book.action == false ? "Not Approved" : "Approved"}}</td>
         </tr>
       </tbody>
     </q-markup-table>

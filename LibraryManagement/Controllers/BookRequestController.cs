@@ -1,5 +1,7 @@
-﻿using LibraryManagement.Repositories;
+﻿using LibraryManagement.Handlers;
+using LibraryManagement.Repositories;
 using LibraryManagement.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

@@ -9,27 +9,27 @@ using System.Threading.Tasks;
 namespace LibraryManagement.Controllers
 {
     [ApiController]
-    public class RegisterController : Controller
+    public class LoginControllerNew : Controller
     {
         private readonly ILibraryRepository _libraryRepository;
-        public RegisterController(ILibraryRepository libraryRepository)
+        public LoginControllerNew(ILibraryRepository libraryRepository)
         {
             _libraryRepository = libraryRepository;
         }
         [HttpPost]
-        [Route("register")]
-        public async Task<IActionResult> Signup(Login testRegister)
+        [Route("signin")]
+        public async Task<IActionResult> Signup(Login login)
         {
 
-            if (testRegister == null || string.IsNullOrEmpty(testRegister.Username) || string.IsNullOrEmpty(testRegister.Password))
+            if (login == null || string.IsNullOrEmpty(login.Username) || string.IsNullOrEmpty(login.Password))
             {
                 return BadRequest("Missing register details");
             }
             else
             {
 
-                await _libraryRepository.Signup(testRegister);
-                return Ok("Successfully Register.");
+                await _libraryRepository.Signin(login);
+                return Ok("Successfully Login.");
             }
             //return Ok("Successfully Register");
 

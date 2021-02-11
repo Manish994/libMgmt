@@ -12,6 +12,7 @@ namespace LibraryManagement.Repositories
     {
         Task Insert(TeacherDetail teacherdetail);
         Task Signup(Login login);
+        Task Signin(Login login);
         Task Insert(BookDetail bookdetail);
         Task<IEnumerable<BookDetail>> GetAll();
         Task<IEnumerable<TeacherDetail>> GetAllTeacher();
@@ -56,6 +57,10 @@ namespace LibraryManagement.Repositories
         {
             await _LibraryDBContext.Logins.AddAsync(login);
             await _LibraryDBContext.SaveChangesAsync();
+        }
+        public async Task Signin(Login login)
+        {
+           await _LibraryDBContext.Logins.FirstOrDefaultAsync(x => x.Username == login.Username || x.Password == login.Password);
         }
         public async Task InsertRequest(RequestBook requestBook)
         {

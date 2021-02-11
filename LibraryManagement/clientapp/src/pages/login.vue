@@ -77,15 +77,16 @@ export default {
     };
   },
   methods: {
-    btnLogin: async function(e) {
+    btnLogin: async function() {
       let vm = this;
       try {
         let response = await vm.$axios.post("api/login", vm.loginCredentials);
-        console.log(response.data);
+        console.log("response",response.data);
         vm.$q.notify({
           message: response.data,
           color: "green"
         });
+        vm.$router.push("/")
       } catch (error) {}
     }
   }
