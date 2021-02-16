@@ -151,6 +151,7 @@
           <td>{{ formatDate(book.dueDate) }}</td>
           <td v-if="book.action == null">Pending</td>
           <td v-else>{{ book.action == false ? "Not Approved" : "Approved"}}</td>
+        <!-- <td>{{(book.action == false) ? "Not Approved" : (book.action == true) ? "Approved" : (book.action == null) ? "Pending"}}</td> -->
         </tr>
       </tbody>
     </q-markup-table>

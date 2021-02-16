@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryManagement.Repositories;
 using LibraryManagement.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Test.Authentication;
 
 namespace LibraryManagement.Controllers
 {
@@ -17,6 +19,7 @@ namespace LibraryManagement.Controllers
             _libraryRepository = libraryRepository;
         }
 
+        [Authorize(Roles=UserRoles.Admin)]
         [HttpGet]
         [Route("get-AllStudents")]
         public async Task<IActionResult> GetAllStudent()

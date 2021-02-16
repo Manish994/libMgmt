@@ -1,10 +1,6 @@
 using System;
 using System.IO;
-using LibraryManagement.Handlers;
-using LibraryManagement.Helpers;
-using LibraryManagement.Interfaces;
 using LibraryManagement.Repositories;
-using LibraryManagement.Services;
 using LibraryManagement.ViewModel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -16,8 +12,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using static LibraryManagement.Requirements.UserStatusRequirement;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.Text;
+using Test.Authentication;
 
 namespace LibraryManagement
 {
@@ -31,35 +30,40 @@ namespace LibraryManagement
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<LibraryDBContext>();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                    .AddJwtBearer(options =>
-                    {
-                        options.TokenValidationParameters = new TokenValidationParameters
-                        {
-                            ValidateIssuer = true,
-                            ValidateAudience = true,
-                            ValidateIssuerSigningKey = true,
-                            ValidIssuer = TokenHelper.Issuer,
-                            ValidAudience = TokenHelper.Audience,
-                            IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(TokenHelper.Secret))
-                        };
+            // For Entity Framework  
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-                    });
+            // For Identity  
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
-            services.AddAuthorization(options =>
+            // Adding Authentication  
+            services.AddAuthentication(options =>
             {
-                options.AddPolicy("OnlyNonBlockedCustomer", policy =>
-                {
-                    policy.Requirements.Add(new UserBlockedStatusRequirement(false));
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
 
-                });
+            // Adding Jwt Bearer  
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = Configuration["JWT:ValidAudience"],
+                    ValidIssuer = Configuration["JWT:ValidIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
+                };
             });
 
-            services.AddSingleton<IAuthorizationHandler, UserBlockedStatusHandler>();
-            services.AddScoped<ICustomerService, CustomerService>();
-
+            services.AddDbContext<LibraryDBContext>();
+           
             services.AddCors(o => o.AddPolicy("AllowAllCORS", builder =>
             {
                 builder.AllowAnyOrigin()
@@ -69,6 +73,7 @@ namespace LibraryManagement
 
             services.AddControllersWithViews().AddNewtonsoftJson().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddTransient<ILibraryRepository, LibraryRepository>();
+            services.AddTransient<ITeacherSearchRepository, SearchRepository>();
 
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration =>

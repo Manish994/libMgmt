@@ -1,4 +1,4 @@
-﻿using LibraryManagement.Handlers;
+﻿
 using LibraryManagement.Repositories;
 using LibraryManagement.ViewModel;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Test.Authentication;
 
 namespace LibraryManagement.Controllers
 {
@@ -19,6 +20,8 @@ namespace LibraryManagement.Controllers
             _libraryRepository = libraryRepository;
         }
 
+
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         [Route("Insert-Request")]
         public async Task<IActionResult> InsertRequest()
@@ -47,6 +50,7 @@ namespace LibraryManagement.Controllers
             }
         }
 
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpGet]
         [Route("Response-Request")]
         public async Task<IActionResult> ResponseRequest()
@@ -64,6 +68,7 @@ namespace LibraryManagement.Controllers
             }
         }
 
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         [Route("Approve-Request")]
         public async Task<IActionResult> ResponseRequest(RequestBook objRequestBook)
@@ -81,6 +86,8 @@ namespace LibraryManagement.Controllers
             return Ok("Successfully Approved");
             
         }
+
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         [Route("Cancel-Request")]
         public async Task<IActionResult> CancelRequest(RequestBook objRequestBook)

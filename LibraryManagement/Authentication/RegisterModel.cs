@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LibraryManagement.Request
+namespace Test.Authentication
 {
-    public class LoginRequest
+    public class RegisterModel
     {
         public string Username { get; set; }
+        public string Email { get; set; }
         public string Password { get; set; }
+
+
     }
 }

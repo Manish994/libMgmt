@@ -48,6 +48,11 @@ namespace LibraryManagement.Repositories
         {
             _LibraryDBContext = LibraryDBContext;
         }
+
+        //public LibraryRepository()
+        //{
+        //    LibraryDBContext libraryDBContext = new LibraryDBContext();
+        //}
         public async Task Insert(TeacherDetail teacherdetail)
         {
             await _LibraryDBContext.TeacherDetails.AddAsync(teacherdetail);

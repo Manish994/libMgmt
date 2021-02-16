@@ -292,8 +292,6 @@ export default {
       formData.append("Contact", vm.addNewTeacher.contactNumber);
       formData.append("CitizenshipNo", vm.addNewTeacher.citizenshipNo);
 
-      console.log(vm.file);
-
       // let response = await vm.$axios.post("insert-newteacher", formData, {
       //   headers:{
       //     'Content-Type': 'multipart/form-data'

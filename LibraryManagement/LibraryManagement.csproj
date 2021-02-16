@@ -8,10 +8,10 @@
 		<DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="AWSSDK" Version="2.3.55.2" />
 		<PackageReference Include="Grpc.Core" Version="2.35.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.11" />
 		<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.12" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.11" />
 		<PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.9" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.2" />
@@ -31,7 +31,6 @@
 		<None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Model\" />
 	  <Folder Include="wwwroot\Book\" />
 	  <Folder Include="wwwroot\Student\" />
 	  <Folder Include="wwwroot\Teacher\" />
