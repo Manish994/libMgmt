@@ -81,13 +81,16 @@ export default {
       let vm = this;
       try {
         let response = await vm.$axios.post("login", vm.loginCredentials);
-        console.log("response",response.data);
+        console.log(response);
+        console.log(response.data);
+        alert("None");
         vm.$q.notify({
-          message: response.data,
-          color: "green"
+          message: response.data.message,
+          color: "negative"
         });
         vm.$router.push("/")
-      } catch (error) {}
+      } catch (error) {
+      }
     }
   }
 };

@@ -145,14 +145,19 @@ export default {
                     vm.regCredentials
                   );
                   vm.$q.notify({
-                    message: response.data,
-                    color: "green"
+                    message: response.data.message,
+                    progress: true,
+                    color: "green",
+                    position: "top",
+                    textColor: "white",
+                    timeout: 4000,
+                    icon: "email"
                   });
-                  vm.regCredentials.firstName="";
-                  vm.regCredentials.lastName ="";
-                  vm.regCredentials.username ="";
-                  vm.regCredentials.password ="";
-                  vm.regCredentials.conPassword ="";
+                  vm.regCredentials.firstName = "";
+                  vm.regCredentials.lastName = "";
+                  vm.regCredentials.username = "";
+                  vm.regCredentials.password = "";
+                  vm.regCredentials.conPassword = "";
                 }
               } else {
                 vm.$q.notify({
