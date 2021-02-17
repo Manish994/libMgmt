@@ -30,16 +30,17 @@ namespace LibraryManagement.Controllers
 
             try
             {
-                IFormFile files = Request.Form.Files[0];
-                string path = _webHostEnvironment.WebRootPath + "\\Teacher\\";
+                IFormFile files = HttpContext.Request.Form.Files[0];
                 string ext = Path.GetExtension(files.FileName).ToLowerInvariant();
                 string fileName = DateTime.UtcNow.AddMinutes(345).ToString("yyyyMMddHHmmssffff") + ext;
+                string path = _webHostEnvironment.WebRootPath + "\\Teacher\\" + fileName;
                 using (FileStream fileStream = System.IO.File.Create(path + files.FileName))
                 {
                     await files.CopyToAsync(fileStream);
                 }
 
                 TeacherDetail teacherDetail = new TeacherDetail();
+                teacherDetail.TeacherId = HttpContext.Request.Form["TeacherId"];
                 teacherDetail.FirstName = HttpContext.Request.Form["FirstName"];
                 teacherDetail.LastName = HttpContext.Request.Form["LastName"];
                 teacherDetail.DepartmentId = int.Parse(HttpContext.Request.Form["Id"]);

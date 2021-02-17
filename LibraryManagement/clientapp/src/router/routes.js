@@ -7,8 +7,9 @@ const routes = [
       { path: '', component: () => import('pages/index.vue') },
       { path: 'student/details', component: () => import('pages/studentdetails.vue') },
       { path: 'book/details', component: () => import('pages/bookdetails.vue') },
-      { path: 'book/request', component: () => import('pages/requestbook.vue') },
+      { path: 'book/request', component: () => import('pages/requestbook.vue'), meta:{ requiresAuthentication: true } },
       {path: 'search/teacher', component:() => import ('pages/searchTeacher.vue')},
+      {path:'new/teacher', component:() => import('pages/newTeacher.vue')},
     ]
   },
 

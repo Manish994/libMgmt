@@ -116,7 +116,7 @@ namespace LibraryManagement.Controllers
                 await _userManager.AddToRoleAsync(user, UserRoles.Admin);
             }
 
-            return Ok(new Response { Status = "Success", Message = "User as a Admin created successfully!" });
+            return Ok(new  { Status = "Success", Message = "User as a Admin created successfully!" });
         }
     }
 }

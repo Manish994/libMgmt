@@ -12,6 +12,7 @@
             hide-selected
             fill-input
             outlined
+            clearable
             placeholder="Search By Id"
           >
             <template v-slot:append>
@@ -80,8 +81,8 @@ export default {
   data() {
     return {
       search: [],
-      // filterTeacher: [],
-      options: this.filterTeacher,
+      filterTeacher: [],
+      options:this.filterTeacher,
       infoTeachers: {
         firstName: "",
         lastName: "",
@@ -106,12 +107,11 @@ export default {
       }
     },
 
-    filterFn(val, update) {
-      if (val === "") {
-        update(() => {
-          this.options = this.filterTeacher;
-        });
-        return;
+    filterFn(val, update,abort) {
+       
+      if (val.length < 1) {
+        abort()
+        return
       }
       update(() => {
         const needle = val.toLowerCase();

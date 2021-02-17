@@ -18,6 +18,18 @@
           </q-card-section>
 
           <q-card-section class="q-pt-none">
+             <q-input
+              label="Teacher ID"
+              v-model="addNewTeacher.teacherId"
+              lazy-rules
+              color="teal"
+              :rules="[
+                val =>
+                  (val !== null && val !== '') || 'Please Provide Teacher Id'
+              ]"
+              ><template v-slot:append> <q-icon name="person" /> </template
+            ></q-input>
+
             <q-input
               label="First_Name"
               v-model="addNewTeacher.firstName"
@@ -74,7 +86,7 @@
               ><template v-slot:append> <q-icon name="phone" /> </template
             ></q-input>
 
-            <q-file multiple filled v-model="file" label="File Upload"> </q-file>
+            <q-file  filled v-model="file" label="File Upload"> </q-file>
 
              <q-input
               label="Citizenship NO"
@@ -92,7 +104,7 @@
 
           <q-card-actions align="right" class="bg-white text-teal">
             <q-btn push label="SAVE" v-on:click="saveNewTeacher" />
-            <q-btn push label="CANCEL" v-close-popup />
+            <q-btn push label="CANCEL" color="negative" v-close-popup />
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -104,6 +116,18 @@
           </q-card-section>
 
           <q-card-section class="q-pt-none">
+             <q-input
+              label="Teacher ID"
+              v-model="addNewTeacherNew.teacherId"
+              lazy-rules
+              color="teal"
+              :rules="[
+                val =>
+                  (val !== null && val !== '') || 'Please Provide First Name'
+              ]"
+              ><template v-slot:append> <q-icon name="person" /> </template
+            ></q-input>
+
             <q-input
               label="First_Name"
               v-model="addNewTeacherNew.firstName"
@@ -181,7 +205,7 @@
         </thead>
         <tbody>
           <tr v-for="user in teachersinfo" v-bind:key="user.id">
-            <td>{{ user.id }}</td>
+            <td>{{ user.teacherId}}</td>
             <td>{{ user.firstName }}</td>
             <td>{{ user.lastName }}</td>
             <td>{{ user.department.name }}</td>
@@ -225,6 +249,7 @@ export default {
       openTeacherAddDialog: false,
       file: null,
       addNewTeacher: {
+        teacherId:"",
         firstName: "",
         lastName: "",
         branch: "",
@@ -233,6 +258,7 @@ export default {
         citizenshipNo:"",
       },
       addNewTeacherNew: {
+        teacherId:"",
         firstName: "",
         lastName: "",
         department: null,
@@ -285,6 +311,7 @@ export default {
       let vm = this;
       let formData = new FormData();
       formData.append("files", vm.file);
+       formData.append("TeacherId", vm.addNewTeacher.teacherId);
       formData.append("FirstName", vm.addNewTeacher.firstName);
       formData.append("LastName", vm.addNewTeacher.lastName);
       formData.append("Id", vm.selectedDepartment.id);
@@ -292,19 +319,15 @@ export default {
       formData.append("Contact", vm.addNewTeacher.contactNumber);
       formData.append("CitizenshipNo", vm.addNewTeacher.citizenshipNo);
 
-      // let response = await vm.$axios.post("insert-newteacher", formData, {
-      //   headers:{
-      //     'Content-Type': 'multipart/form-data'
-      //   }
-      // });
-      vm.$axios({
-        method: 'post',
-        url: 'insert-newteacher',
-        formData,
-        headers:{'Content-Type': 'multipart/form-data'}
-      }).then(function() {
+      let response = await vm.$axios.post("insert-newteacher", formData);
+      // vm.$axios({
+      //   method: 'post',
+      //   url: 'insert-newteacher',
+      //   formData,
+      //   headers:{'Content-Type': 'multipart/form-data'}
+      // }).then(function() {
 
-      });
+      // });
 
       vm.$q.notify({
         message: response.data,
