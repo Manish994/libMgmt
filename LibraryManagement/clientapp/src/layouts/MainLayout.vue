@@ -17,7 +17,7 @@
                 />
                 <div class="items-center">
                   <div class="q-mb-xs">Teacher Id :</div>
-                  <div class="q-mb-xs">Teacher Name :</div>
+                  <div class="q-mb-xs">Name : {{userToken}}</div>
                 </div>
               </div>
 
@@ -26,8 +26,9 @@
                   color="primary"
                   label="Sign Out"
                   unelevated
-                  size="lg"
-                  v-close-popup
+                  size="md"
+                  v-on:click="btnSignOut"
+                 
                 >
                 </q-btn>
               </div>
@@ -55,7 +56,7 @@
               <q-avatar size="100px" class="q-mb-md">
                 <img src="https://placeimg.com/500/300/nature" alt="" />
               </q-avatar>
-              <div>Teacher Name</div>
+              <div>{{userToken}}</div>
             </div>
           </q-item>
           <q-item-label header class="text-h6">
@@ -131,11 +132,22 @@
 <script>
 export default {
   name: "MainLayout",
-
   data() {
     return {
-      left: false
+      left: false,
+      userToken: localStorage.getItem('Name'),
     };
+  },
+  methods:{
+    btnSignOut:async function(){
+      let vm = this;
+      try {
+        localStorage.clear();
+        vm.$router.push("/auth/login")
+      } catch (error) {
+        
+      }
+    }
   }
 };
 </script>

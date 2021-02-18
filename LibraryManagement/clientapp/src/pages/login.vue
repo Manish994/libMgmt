@@ -81,14 +81,19 @@ export default {
       let vm = this;
       try {
         let response = await vm.$axios.post("login", vm.loginCredentials);
-        console.log(response);
-        console.log(response.data);
-        alert("None");
-        vm.$q.notify({
-          message: response.data.message,
-          color: "negative"
-        });
-        vm.$router.push("/")
+        const token = response.data.token;
+        const name = response.data.userName;
+        if(response.data.role=="Admin"){
+           localStorage.setItem('user-token', token)
+            localStorage.setItem('Name', name)
+           vm.$router.push("/")
+        }
+
+        if(response.data.role=="User"){
+           localStorage.setItem('user-token', token)
+            localStorage.setItem('Name', name)
+           vm.$router.push("/student")
+        }
       } catch (error) {
       }
     }

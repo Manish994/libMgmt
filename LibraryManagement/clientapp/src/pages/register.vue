@@ -144,6 +144,7 @@ export default {
                     "register",
                     vm.regCredentials
                   );
+                  vm.$router.push("/auth/login")
                   vm.$q.notify({
                     message: response.data.message,
                     progress: true,
@@ -153,11 +154,15 @@ export default {
                     timeout: 4000,
                     icon: "email"
                   });
+                   
                   vm.regCredentials.firstName = "";
                   vm.regCredentials.lastName = "";
                   vm.regCredentials.username = "";
                   vm.regCredentials.password = "";
                   vm.regCredentials.conPassword = "";
+                 
+                  //push into login page
+                  
                 }
               } else {
                 vm.$q.notify({

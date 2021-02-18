@@ -5,9 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using LibraryManagement.Repositories;
 using LibraryManagement.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Test.Authentication;
 
 namespace LibraryManagement.Controllers
 {
@@ -60,6 +62,8 @@ namespace LibraryManagement.Controllers
             }
         }
 
+        [Authorize]
+        [Authorize(Roles = UserRoles.Admin + "," + UserRoles.User)]
         [HttpGet]
         [Route("get-Teachers")]
         public async Task<IActionResult> GetAllTeacher()

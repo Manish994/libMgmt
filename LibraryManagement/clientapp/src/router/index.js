@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import routes from './routes'
+import { LocalStorage, Notify } from 'quasar'
+
 
 Vue.use(VueRouter)
 
@@ -25,6 +27,31 @@ export default function (/* { store, ssrContext } */) {
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
   })
+
+  Router.beforeEach((to, from, next) =>{
+    if(to.matched.some(record => record.meta.requiresAuthentication)){
+      if(LocalStorage.getItem('user-token') === null || LocalStorage.getItem('user-token') === undefined){
+        next({
+          path: '/auth/login'
+        })
+
+        Notify.create({
+          icon:'ion-close',
+          color:'negative',
+          message:'Required Login',
+          actions:[{icon:'close', color:'white'}]
+        })
+      }
+      else{
+        next()
+      }
+    }
+    else{
+      next()
+    }
+  })
+
+
 
   return Router
 }
