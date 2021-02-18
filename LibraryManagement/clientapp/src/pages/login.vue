@@ -83,15 +83,18 @@ export default {
         let response = await vm.$axios.post("login", vm.loginCredentials);
         const token = response.data.token;
         const name = response.data.userName;
+        const role = response.data.role;
         if(response.data.role=="Admin"){
            localStorage.setItem('user-token', token)
-            localStorage.setItem('Name', name)
+          localStorage.setItem('Name', name)
+          localStorage.setItem('Role', role)
            vm.$router.push("/")
         }
 
         if(response.data.role=="User"){
            localStorage.setItem('user-token', token)
             localStorage.setItem('Name', name)
+            localStorage.setItem('Role', role)
            vm.$router.push("/student")
         }
       } catch (error) {

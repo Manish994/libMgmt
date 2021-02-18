@@ -3,9 +3,8 @@ const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    meta:{ requiresAuthentication: true },
     children: [
-      { path: '', component: () => import('pages/index.vue') },
+      { path: '', component: () => import('pages/index.vue'), meta:{ requiresAuthentication: true, hasRole: 'Admin' }},
       { path: 'student/details', component: () => import('pages/studentdetails.vue') },
       { path: 'book/details', component: () => import('pages/bookdetails.vue') },
       { path: 'book/request', component: () => import('pages/requestbook.vue'),},
@@ -15,11 +14,11 @@ const routes = [
   },
 
   {
-    path: '/',
+    path: '/auth',
     component: () => import('layouts/LoginRegister.vue'),
     children: [
-        { path: 'auth/login', component: () => import('pages/login.vue') },
-      { path: 'auth/register', component: () => import('pages/register.vue') },
+        { path: 'login', component: () => import('pages/login.vue') },
+      { path: 'register', component: () => import('pages/register.vue') },
     ]
   },
 

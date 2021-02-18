@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
 import routes from './routes'
 import { LocalStorage, Notify } from 'quasar'
 
@@ -29,6 +28,18 @@ export default function (/* { store, ssrContext } */) {
   })
 
   Router.beforeEach((to, from, next) =>{
+
+    if(to.matched.some(record => record.meta.hasRole) && to.matched.some(record => record.meta.requiresAuthentication)){
+      console.log("TO", to);
+      if(LocalStorage.getItem('Role') === to.meta.hasRole){
+        next();
+      } else {
+        next({
+          path: 'unauthorized'
+        })
+      }
+    }
+
     if(to.matched.some(record => record.meta.requiresAuthentication)){
       if(LocalStorage.getItem('user-token') === null || LocalStorage.getItem('user-token') === undefined){
         next({
@@ -46,6 +57,7 @@ export default function (/* { store, ssrContext } */) {
         next()
       }
     }
+
     else{
       next()
     }
