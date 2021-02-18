@@ -35,7 +35,7 @@ export default function (/* { store, ssrContext } */) {
         next();
       } else {
         next({
-          path: 'unauthorized'
+          path: '/block/oops'
         })
       }
     }

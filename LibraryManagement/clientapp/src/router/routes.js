@@ -4,12 +4,12 @@ const routes = [
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/index.vue'), meta:{ requiresAuthentication: true, hasRole: 'Admin' }},
-      { path: 'student/details', component: () => import('pages/studentdetails.vue') },
-      { path: 'book/details', component: () => import('pages/bookdetails.vue') },
-      { path: 'book/request', component: () => import('pages/requestbook.vue'),},
-      {path: 'search/teacher', component:() => import ('pages/searchTeacher.vue')},
-      {path:'new/teacher', component:() => import('pages/newTeacher.vue')},
+      { path: '', component: () => import('pages/index.vue'), meta:{ requiresAuthentication: true, hasRole: 'Admin'}},
+      { path: 'student/details', component: () => import('pages/studentdetails.vue'), meta:{requiresAuthentication : true, hasRole : 'Admin'} },
+      { path: 'book/details', component: () => import('pages/bookdetails.vue') , meta :{requiresAuthentication : true, hasRole : 'Admin'}},
+      { path: 'book/request', component: () => import('pages/requestbook.vue'), meta : {requiresAuthentication : true, hasRole : 'Admin'}},
+      {path: 'search/teacher', component:() => import ('pages/searchTeacher.vue'), meta : {requiresAuthentication : true, hasRole : 'Admin'}},
+      {path:'new/teacher', component:() => import('pages/newTeacher.vue'), meta : {requiresAuthentication : true, hasRole : 'Admin'}},
     ]
   },
 
@@ -22,10 +22,13 @@ const routes = [
     ]
   },
 
-  // {
-  //   path: '/test',
-  //   component: () => import('pages/test.vue')
-  // },
+  {
+    path:'/block',
+    component:() => import('layouts/block.vue'),
+    children:[
+      {path:'oops', component: () => import('pages/notAccess.vue'), meta : {requiresAuthentication : true}},
+    ]
+  },
 
   {
     path: '/student',
