@@ -35,10 +35,9 @@ namespace LibraryManagement.Controllers
                 IFormFile files = HttpContext.Request.Form.Files[0];
                 string ext = Path.GetExtension(files.FileName).ToLowerInvariant();
                 string fileName = DateTime.UtcNow.AddMinutes(345).ToString("yyyyMMddHHmmssffff") + ext;
-                string newImageName = Path.GetFileNameWithoutExtension(files.FileName);
-                newImageName += fileName;
+               
                 string path = _webHostEnvironment.WebRootPath + "\\Teacher\\" + fileName;
-                using (FileStream fileStream = System.IO.File.Create(path + newImageName))
+                using (FileStream fileStream = System.IO.File.Create(path))
                 {
                     await files.CopyToAsync(fileStream);
                 }

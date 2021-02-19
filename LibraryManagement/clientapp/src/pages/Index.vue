@@ -342,6 +342,7 @@ export default {
     },
     restetForm: function() {
       let vm = this;
+      vm.addNewTeacher.teacherId = "";
       vm.addNewTeacher.firstName = "";
       vm.addNewTeacher.lastName = "";
       vm.selectedDepartment = null;

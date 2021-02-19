@@ -1,6 +1,8 @@
 ﻿
 using LibraryManagement.Repositories;
 using LibraryManagement.ViewModel;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,10 +15,11 @@ namespace LibraryManagement.Controllers
     public class SearchTeacherController : Controller
     {
         private readonly ITeacherSearchRepository _teacherSearchRepository;
-        
-        public SearchTeacherController(ITeacherSearchRepository teacherSearchRepository)
+        public static IWebHostEnvironment _webHostEnvironment;
+        public SearchTeacherController(ITeacherSearchRepository teacherSearchRepository, IWebHostEnvironment webHostEnvironment)
         {
             _teacherSearchRepository = teacherSearchRepository;
+            _webHostEnvironment = webHostEnvironment;
         }
 
 
@@ -37,12 +40,17 @@ namespace LibraryManagement.Controllers
         }
 
         [HttpGet]
-        [Route("Search-TeacherWithId/{teacherId}")]
+        [Route("Search-TeacherWithId")]
         public async Task<IActionResult> SearchTeacherWithId(string teacherId)
-        {
+            {
             try
             {
-                var teacherDetail = await _teacherSearchRepository.SearchTeacherWithId(teacherId);
+                TeacherDetail teacherDetail = await _teacherSearchRepository.SearchTeacherWithId(teacherId);
+                //var response = teacherDetail.ImageName;
+                //var img = _webHostEnvironment.WebRootPath + "\\Teacher\\" + response;
+                //teacherDetail.ImageName = img;
+                teacherDetail.ImagePath= $"{Request.Scheme}://{Request.Host}/Teacher/" + teacherDetail.ImageName;
+
                 return Ok(teacherDetail);
             }
             catch (Exception ex)

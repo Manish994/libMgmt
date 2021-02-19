@@ -71,6 +71,10 @@
           >
           </q-input>
         </div>
+        <div class="col-md-6 q-pr-sm">
+          <q-img :src="infoTeachers.imagePath" style="height: 140px; max-width: 150px">
+          </q-img>
+        </div>
       </div>
     </div>
   </q-layout>
@@ -90,7 +94,9 @@ export default {
           name:""
         },
         email: "",
-        contactNumber: ""
+        contactNumber: "",
+        imageName:"",
+        imagePath: ""
       }
     };
   },
@@ -122,10 +128,15 @@ export default {
     },
     submit: async function() {
       let vm = this;
+      //alert('here')
       try {
-        let response = await vm.$axios.get(
-          `Search-TeacherWithId/` + vm.search.teacherId
+        //alert(vm.search.teachersId)
+        // let response = await vm.$axios.get(`Search-TeacherWithId/` + vm.search.teacherId
+         let response = await vm.$axios.get(`Search-TeacherWithId?teacherId=${vm.search.teacherId}`
         );
+        console.log(response.data);
+        //var image = response.data.imagePath
+        //console.log("image" , image)
         vm.infoTeachers = response.data;
       } catch (error) {}
     }

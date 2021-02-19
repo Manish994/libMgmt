@@ -19,6 +19,9 @@ namespace LibraryManagement.ViewModel
         public string ImageName { get; set; }
         public string CitizenshipNo { get; set; }
 
+        [NotMapped]
+        public string ImagePath { get; set; }
+
         public virtual Department Department { get; set; }
 
         [NotMapped]
