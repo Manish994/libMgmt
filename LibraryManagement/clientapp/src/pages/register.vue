@@ -14,8 +14,8 @@
           <!---------------  Body Section Starts ------------------------------>
           <q-form>
             <q-input
-              label="First Name"
-              v-model.trim="regCredentials.firstName"
+              label="UserName"
+              v-model.trim="regCredentials.username"
               filled
               color="bg-teal-1"
               :rules="[val => val !== null && val !== '']"
@@ -24,7 +24,7 @@
                 <q-icon name="person" />
               </template>
             </q-input>
-            <q-input
+            <!-- <q-input
               label="Last Name"
               v-model.trim="regCredentials.lastName"
               filled
@@ -35,10 +35,10 @@
               <template v-slot:append>
                 <q-icon name="person" />
               </template>
-            </q-input>
+            </q-input> -->
             <q-input
               label="Email"
-              v-model.trim="regCredentials.username"
+              v-model.trim="regCredentials.email"
               filled
               color="bg-teal-1"
               class="q-mt-md"
@@ -105,9 +105,8 @@ export default {
   data() {
     return {
       regCredentials: {
-        firstName: "",
-        lastName: "",
         username: "",
+        email:"",
         password: "",
         conPassword: ""
       }
@@ -118,10 +117,10 @@ export default {
       let vm = this;
       try {
         //check email is valid or not
-        if (vm.regCredentials.username) {
+        if (vm.regCredentials.email) {
           const emailPattern = /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
           const regEmail =
-            emailPattern.test(vm.regCredentials.username) || "Invalid Email";
+            emailPattern.test(vm.regCredentials.email) || "Invalid Email";
           if (regEmail == true) {
             //check password match or not
             if (vm.regCredentials.password) {
@@ -155,9 +154,8 @@ export default {
                     icon: "email"
                   });
                    
-                  vm.regCredentials.firstName = "";
-                  vm.regCredentials.lastName = "";
                   vm.regCredentials.username = "";
+                  vm.regCredentials.email = "";
                   vm.regCredentials.password = "";
                   vm.regCredentials.conPassword = "";
                  

@@ -35,8 +35,10 @@ namespace LibraryManagement.Controllers
                 IFormFile files = HttpContext.Request.Form.Files[0];
                 string ext = Path.GetExtension(files.FileName).ToLowerInvariant();
                 string fileName = DateTime.UtcNow.AddMinutes(345).ToString("yyyyMMddHHmmssffff") + ext;
+                string newImageName = Path.GetFileNameWithoutExtension(files.FileName);
+                newImageName += fileName;
                 string path = _webHostEnvironment.WebRootPath + "\\Teacher\\" + fileName;
-                using (FileStream fileStream = System.IO.File.Create(path + files.FileName))
+                using (FileStream fileStream = System.IO.File.Create(path + newImageName))
                 {
                     await files.CopyToAsync(fileStream);
                 }
@@ -62,7 +64,6 @@ namespace LibraryManagement.Controllers
             }
         }
 
-        [Authorize]
         [Authorize(Roles = UserRoles.Admin + "," + UserRoles.User)]
         [HttpGet]
         [Route("get-Teachers")]

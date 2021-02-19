@@ -84,21 +84,26 @@ export default {
         const token = response.data.token;
         const name = response.data.userName;
         const role = response.data.role;
-        if(response.data.role=="Admin"){
-           localStorage.setItem('user-token', token)
-          localStorage.setItem('Name', name)
-          localStorage.setItem('Role', role)
-           vm.$router.push("/")
+        const email = response.data.email;
+        const password = response.data.password;
+        if (response.data.role == "Admin") {
+          localStorage.setItem("user-token", token);
+          localStorage.setItem("Name", name);
+          localStorage.setItem("Role", role);
+          localStorage.setItem("Email", email);
+          localStorage.setItem("Password", password);
+          vm.$router.push("/");
         }
 
-        if(response.data.role=="User"){
-           localStorage.setItem('user-token', token)
-            localStorage.setItem('Name', name)
-            localStorage.setItem('Role', role)
-           vm.$router.push("/student")
+        if (response.data.role == "User") {
+          localStorage.setItem("user-token", token);
+          localStorage.setItem("Name", name);
+          localStorage.setItem("Role", role);
+          localStorage.setItem("Email", email);
+          localStorage.setItem("Password", password);
+          vm.$router.push("/student");
         }
-      } catch (error) {
-      }
+      } catch (error) {}
     }
   }
 };

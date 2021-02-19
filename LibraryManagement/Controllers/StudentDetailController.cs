@@ -19,7 +19,7 @@ namespace LibraryManagement.Controllers
             _libraryRepository = libraryRepository;
         }
 
-        [Authorize(Roles=UserRoles.Admin)]
+        
         [HttpGet]
         [Route("get-AllStudents")]
         public async Task<IActionResult> GetAllStudent()

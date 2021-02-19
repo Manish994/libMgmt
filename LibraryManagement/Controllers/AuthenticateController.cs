@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -51,8 +52,11 @@ namespace LibraryManagement.Controllers
 
                     foreach (var userRole in userRoles)
                     {
+                       
                         authClaims.Add(new Claim(ClaimTypes.Role, userRole));
                     }
+
+                   
 
                     var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
 
@@ -64,13 +68,14 @@ namespace LibraryManagement.Controllers
                         signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                         );
 
-
                     return Ok(new
                     {
                         token = new JwtSecurityTokenHandler().WriteToken(token),
                         expiration = token.ValidTo,
                         Role = userRoles,
                         UserName = user.UserName,
+                        email=user.Email,
+                        password=user.PasswordHash
                 });
                 }
             }

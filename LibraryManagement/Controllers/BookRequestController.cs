@@ -21,7 +21,6 @@ namespace LibraryManagement.Controllers
         }
 
 
-        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         [Route("Insert-Request")]
         public async Task<IActionResult> InsertRequest()
@@ -50,7 +49,6 @@ namespace LibraryManagement.Controllers
             }
         }
 
-        [Authorize(Roles = UserRoles.Admin)]
         [HttpGet]
         [Route("Response-Request")]
         public async Task<IActionResult> ResponseRequest()
