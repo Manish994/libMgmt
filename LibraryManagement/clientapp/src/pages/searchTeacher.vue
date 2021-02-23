@@ -72,7 +72,7 @@
           </q-input>
         </div>
         <div class="col-md-6 q-pr-sm">
-          <q-img :src="infoTeachers.imagePath" style="height: 140px; max-width: 150px">
+          <q-img :src="infoTeachers.imagePath" style="height: 170px; max-width: 250px">
           </q-img>
         </div>
       </div>

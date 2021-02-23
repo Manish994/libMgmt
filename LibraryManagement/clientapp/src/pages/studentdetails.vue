@@ -1,11 +1,25 @@
 <template>
   <div class="q-pa-md">
-    <q-btn
-      label="Add New Student"
-      color="primary"
-      v-on:click="onAddStudent"
-      class="q-mb-md"
-    ></q-btn>
+    <div class="row q-col-gutter-sm q-py-xs">
+      <div class="col-xs-12 col-sm-6">
+        <q-btn
+          label="Add New Student"
+          color="primary"
+          v-on:click="onAddStudent"
+          class="q-mb-md"
+        ></q-btn>
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <q-btn
+          label="Download"
+          color="primary"
+          v-on:click="download"
+          icon-right="download"
+          class="q-mb-md q-mr-md"
+        >
+        </q-btn>
+      </div>
+    </div>
 
     <q-dialog v-model="openStudentAddDialog">
       <q-card style="width: 700px; max-width: 80vw">
@@ -232,7 +246,6 @@ export default {
     },
     saveNewStudent: async function() {
       let vm = this;
-      alert("Hello");
       vm.addNewStudent.departmentId = vm.addNewStudent.stdDepartment.id;
       let response = await vm.$axios.post(
         "insert-newStudent",
@@ -279,6 +292,14 @@ export default {
         vm.$q.loading.hide();
       } catch (error) {
         vm.$q.loading.hide();
+      }
+    },
+    download:async function(){
+      let vm=this;
+      try {
+        let response = await vm.$axios.get("");
+      } catch (error) {
+        
       }
     }
   },

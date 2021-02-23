@@ -113,7 +113,7 @@
           <q-linear-progress color="grey" style="height: 2px" />
            <q-item to="/new/teacher" active-class="q-item-no-link-highlighting">
             <q-item-section avatar>
-              <q-icon name="plus" />
+              <q-icon name="add" />
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-h6">NEW TEACHER</q-item-label>
