@@ -1,5 +1,17 @@
 <template>
   <div class="q-pa-md">
+    <div class="row q-col-gutter-sm q-py-xs">
+      <div class="col-xs-12 col-sm-6">
+        <q-btn
+          label="Download"
+          color="primary"
+          v-on:click="downloadExcel"
+          icon-right="download"
+          class="q-mb-md q-mr-md"
+        >
+        </q-btn>
+      </div>
+    </div>
     <q-markup-table>
       <thead>
         <tr>
@@ -68,6 +80,28 @@ export default {
       let response = await vm.$axios.get("Response-Request");
       vm.RequestInfo = response.data;
     },
+    downloadExcel: async function() {
+      let vm = this;
+      try {
+        const method = "GET";
+        const url = `exportDataToExcel/GetAll`;
+        this.$axios
+          .request({
+            url,
+            method,
+            responseType: "blob" //important
+          })
+          .then(({ data }) => {
+            const downloadUrl = window.URL.createObjectURL(new Blob([data]));
+            const link = document.createElement("a");
+            link.href = downloadUrl;
+            link.setAttribute("download", "List Of Students.xlsx"); //any other extension
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+          });
+      } catch (error) {}
+    },
     btnApproved: async function(book) {
       let vm = this;
       try {
@@ -77,18 +111,17 @@ export default {
           color: "green"
         });
         vm.getRequestInfo();
-        
       } catch (error) {}
     },
     btnCancel: async function(book) {
       let vm = this;
       try {
-        let response = await vm.$axios.post("Cancel-Request",book)
-         vm.$q.notify({
+        let response = await vm.$axios.post("Cancel-Request", book);
+        vm.$q.notify({
           message: response.data,
           color: "negative"
         });
-         vm.getRequestInfo();
+        vm.getRequestInfo();
       } catch (error) {}
     },
     formatDate: function(input) {

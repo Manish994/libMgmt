@@ -12,23 +12,26 @@ using System.Threading.Tasks;
 namespace LibraryManagement.Controllers
 {
     [ApiController]
-    public class ExportDataToExcelController : Controller
+    public class ExportDataToExcelController : ControllerBase
     {
         private readonly IExportDataToExcel _exportDataToExcel;
 
-        public ExportDataToExcelController(IExportDataToExcel exportDataToExcel)
+        private readonly ILibraryRepository _libraryRepository;
+
+        public ExportDataToExcelController(IExportDataToExcel exportDataToExcel, ILibraryRepository libraryRepository)
         {
             _exportDataToExcel = exportDataToExcel;
+            _libraryRepository = libraryRepository;
         }
 
 
         [HttpGet]
-        [Route("ExportDataToExcel/GetAllStudents")]
-        public async Task<IActionResult> GetAllStudents()
+        [Route("exportDataToExcel/GetAll")]
+        public async Task<IActionResult> AllStudents()
         {
             try
             {
-                IEnumerable<StudentDetail> studentDetails = await _exportDataToExcel.GetAllStudents();
+                IEnumerable<StudentDetail> studentDetails = await _exportDataToExcel.AllStudents();
                 var stream = new MemoryStream();
                 using var pck = new ExcelPackage(stream);
                 var ws = pck.Workbook.Worksheets.Add("List Of Students");
@@ -49,13 +52,19 @@ namespace LibraryManagement.Controllers
                 {
                     ws.Cells[dataRow, 1].Value = item.x.CollegeRollNo;
                     ws.Cells[dataRow, 2].Value = item.x.FirstName;
-                    ws.Cells[dataRow, 2].Value = item.x.LastName;
-                    ws.Cells[dataRow, 2].Value = item.x.Department.Name;
-                    ws.Cells[dataRow, 2].Value = item.x.Email;
-                    ws.Cells[dataRow, 2].Value = item.x.ContactNumber;
-                    ws.Cells[dataRow, 2].Value = item.x.Address;
+                    ws.Cells[dataRow, 3].Value = item.x.LastName;
+                    ws.Cells[dataRow, 4].Value = item.x.Department.Name;
+                    ws.Cells[dataRow, 5].Value = item.x.Email;
+                    ws.Cells[dataRow, 6].Value = item.x.ContactNumber;
+                    ws.Cells[dataRow, 7].Value = item.x.Address;
                     dataRow += 1;
                 }
+                ws.Cells.AutoFitColumns();
+                pck.Save();
+                const string fileName = @"List Of Students.xlsx";
+                const string fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                stream.Position = 0;
+                return File(stream, fileType, fileName);
             }
             catch (Exception ex)
             {

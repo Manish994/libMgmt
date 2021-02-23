@@ -13,7 +13,7 @@
         <q-btn
           label="Download"
           color="primary"
-          v-on:click="download"
+          v-on:click="onDownLoadExcel"
           icon-right="download"
           class="q-mb-md q-mr-md"
         >
@@ -294,13 +294,25 @@ export default {
         vm.$q.loading.hide();
       }
     },
-    download:async function(){
-      let vm=this;
-      try {
-        let response = await vm.$axios.get("");
-      } catch (error) {
-        
-      }
+    onDownLoadExcel: async function() {
+      let vm = this;
+      const method = "GET";
+      const url = `exportDataToExcel/GetAll`;
+      this.$axios
+        .request({
+          url,
+          method,
+          responseType: "blob" //important
+        })
+        .then(({ data }) => {
+          const downloadUrl = window.URL.createObjectURL(new Blob([data]));
+          const link = document.createElement("a");
+          link.href = downloadUrl;
+          link.setAttribute("download", "List Of Students.xlsx"); //any other extension
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        });
     }
   },
   async mounted() {

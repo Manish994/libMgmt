@@ -9,7 +9,7 @@ namespace LibraryManagement.Repositories
 {
     public interface IExportDataToExcel
     {
-        Task<IEnumerable<StudentDetail>> GetAllStudents();
+        Task<IEnumerable<StudentDetail>> AllStudents();
     }
 
     public class ExportDataToExcel : IExportDataToExcel
@@ -21,7 +21,7 @@ namespace LibraryManagement.Repositories
             _libraryDBContext = libraryDBContext;
         }
 
-        public async Task<IEnumerable<StudentDetail>> GetAllStudents()
+        public async Task<IEnumerable<StudentDetail>> AllStudents()
         {
             return await _libraryDBContext.StudentDetails.Include(x => x.Department).ToListAsync();
         }

@@ -74,6 +74,7 @@ namespace LibraryManagement
             services.AddControllersWithViews().AddNewtonsoftJson().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddTransient<ILibraryRepository, LibraryRepository>();
             services.AddTransient<ITeacherSearchRepository, SearchRepository>();
+            services.AddTransient<IExportDataToExcel, ExportDataToExcel>();
 
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration =>
