@@ -120,6 +120,15 @@
             </q-item-section>
           </q-item>
 
+          <q-linear-progress color="grey" style="height: 2px" />
+           <q-item to="/new/excelUpload" active-class="q-item-no-link-highlighting">
+            <q-item-section avatar>
+              <q-icon name="add" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-h6">UPLOAD EXCEL</q-item-label>
+            </q-item-section>
+          </q-item>
         </q-list>
       </q-scroll-area>
     </q-drawer>

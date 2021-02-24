@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using Test.Authentication;
+using LibraryManagement.Infrastructure;
+using System.Reflection;
 
 namespace LibraryManagement
 {
@@ -75,6 +77,10 @@ namespace LibraryManagement
             services.AddTransient<ILibraryRepository, LibraryRepository>();
             services.AddTransient<ITeacherSearchRepository, SearchRepository>();
             services.AddTransient<IExportDataToExcel, ExportDataToExcel>();
+            services.AddTransient<IConnectionFactory, ConnectionFactory>();
+            services.AddTransient<IUploadDownloadExcel, UploadDownloadExcel>();
+            //services.AddMediatR(Assembly.GetExecutingAssembly());
+            //services.AddMediatR(typeof(MyCommandHandler).Assembly);
 
             services.AddControllersWithViews();
             services.AddSpaStaticFiles(configuration =>

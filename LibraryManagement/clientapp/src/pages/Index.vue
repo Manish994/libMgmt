@@ -180,7 +180,7 @@
                 val =>
                   (val !== null && val !== '') || 'Please Provide Phone Number'
               ]"
-              ><template v-slot:append> <q-icon name="phone" /> </template
+              ><template v-slot:append> <q-icon name="phone" /></template
             ></q-input>
           </q-card-section>
 

@@ -38,7 +38,7 @@ namespace LibraryManagement.Controllers
                 // use file stream when writing a file to disk.
                 var stream = new MemoryStream();
                 using var pck = new ExcelPackage(stream);
-                var ws = pck.Workbook.Worksheets.Add("List Of Students");
+                var ws = pck.Workbook.Worksheets.Add("List_Of_Students");
                 var staticHeaders = new string[]
                {
                    "Roll Number", "First Name", "Last Name", "Department", "Email", "Phone Number", "Address"
@@ -65,7 +65,7 @@ namespace LibraryManagement.Controllers
                 }
                 ws.Cells.AutoFitColumns();
                 pck.Save();
-                const string fileName = @"List Of Students.xlsx";
+                const string fileName = @"List_Of_Students.xlsx";
                 const string fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                 stream.Position = 0;
                 return File(stream, fileType, fileName);

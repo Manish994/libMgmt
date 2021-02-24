@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
 
@@ -19,12 +17,6 @@ namespace LibraryManagement.ViewModel
         public string ImageName { get; set; }
         public string CitizenshipNo { get; set; }
 
-        [NotMapped]
-        public string ImagePath { get; set; }
-
         public virtual Department Department { get; set; }
-
-        [NotMapped]
-        public IEnumerable<IFormFile> Files { get; set; }
     }
 }

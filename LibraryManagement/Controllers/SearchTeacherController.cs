@@ -49,7 +49,7 @@ namespace LibraryManagement.Controllers
                 //var response = teacherDetail.ImageName;
                 //var img = _webHostEnvironment.WebRootPath + "\\Teacher\\" + response;
                 //teacherDetail.ImageName = img;
-                teacherDetail.ImagePath= $"{Request.Scheme}://{Request.Host}/Teacher/" + teacherDetail.ImageName;
+                //teacherDetail.ImagePath= $"{Request.Scheme}://{Request.Host}/Teacher/" + teacherDetail.ImageName;
 
                 return Ok(teacherDetail);
             }

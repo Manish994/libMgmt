@@ -308,7 +308,7 @@ export default {
           const downloadUrl = window.URL.createObjectURL(new Blob([data]));
           const link = document.createElement("a");
           link.href = downloadUrl;
-          link.setAttribute("download", "List Of Students.xlsx"); //any other extension
+          link.setAttribute("download", "List_Of_Students.xlsx"); //any other extension
           document.body.appendChild(link);
           link.click();
           link.remove();

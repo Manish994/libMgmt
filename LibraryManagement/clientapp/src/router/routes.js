@@ -10,6 +10,7 @@ const routes = [
       { path: 'book/request', component: () => import('pages/requestbook.vue'), meta : {requiresAuthentication : true, hasRole : 'Admin'}},
       {path: 'search/teacher', component:() => import ('pages/searchTeacher.vue'), meta : {requiresAuthentication : true, hasRole : 'Admin'}},
       {path:'new/teacher', component:() => import('pages/newTeacher.vue'), meta : {requiresAuthentication : true, hasRole : 'Admin'}},
+      {path:'new/excelUpload', component:() => import('pages/uploadExcel.vue'), meta : {requiresAuthentication : true, hasRole : 'Admin'}},
     ]
   },
 

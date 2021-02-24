@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper;
+using LibraryManagement.Infrastructure;
 using LibraryManagement.ViewModel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Repositories
@@ -11,8 +15,7 @@ namespace LibraryManagement.Repositories
     public interface ILibraryRepository
     {
         Task Insert(TeacherDetail teacherdetail);
-        Task Signup(Login login);
-        Task Signin(Login login);
+        
         Task Insert(BookDetail bookdetail);
         Task<IEnumerable<BookDetail>> GetAll();
         Task<IEnumerable<TeacherDetail>> GetAllTeacher();
@@ -42,33 +45,26 @@ namespace LibraryManagement.Repositories
         Task InsertRequest(RequestBook requestBook);
 
         Task<IEnumerable<RequestBook>> PullAll();
+
+        Task InsertRequestBook(RequestBook requestBook);
     }
     public class LibraryRepository : ILibraryRepository
     {
         private readonly LibraryDBContext _LibraryDBContext;
-        public LibraryRepository(LibraryDBContext LibraryDBContext)
+
+        private readonly IConnectionFactory _connectionFactory;
+        public LibraryRepository(LibraryDBContext LibraryDBContext, IConnectionFactory connectionFactory)
         {
             _LibraryDBContext = LibraryDBContext;
+            _connectionFactory = connectionFactory;
         }
 
-        //public LibraryRepository()
-        //{
-        //    LibraryDBContext libraryDBContext = new LibraryDBContext();
-        //}
         public async Task Insert(TeacherDetail teacherdetail)
         {
             await _LibraryDBContext.TeacherDetails.AddAsync(teacherdetail);
             await _LibraryDBContext.SaveChangesAsync();
         }
-        public async Task Signup(Login login)
-        {
-            await _LibraryDBContext.Logins.AddAsync(login);
-            await _LibraryDBContext.SaveChangesAsync();
-        }
-        public async Task Signin(Login login)
-        {
-           await _LibraryDBContext.Logins.FirstOrDefaultAsync(x => x.Username == login.Username || x.Password == login.Password);
-        }
+    
         public async Task InsertRequest(RequestBook requestBook)
         {
             await _LibraryDBContext.RequestBooks.AddAsync(requestBook);
@@ -206,10 +202,6 @@ namespace LibraryManagement.Repositories
             return await _LibraryDBContext.StudentDetails.Include(x => x.Department).FirstOrDefaultAsync(x => x.Id == rollNumber);
         }
 
-        //public async Task<BookDetail> GetBookByid(int rollNumber)
-        //{
-        //    return await _LibraryDBContext.BookDetails.FirstOrDefaultAsync(x => x.Id == rollNumber);
-        //}
         public async Task<BookDetail> BookById(int rollNumber)
         {
             return await _LibraryDBContext.BookDetails.FirstOrDefaultAsync(x => x.Id == rollNumber);
@@ -218,6 +210,15 @@ namespace LibraryManagement.Repositories
         public async Task<IEnumerable<RequestBook>> PullAll()
         {
             return await _LibraryDBContext.RequestBooks.ToListAsync();
+        }
+
+        public async Task InsertRequestBook(RequestBook requestBook)
+        {
+            using var conn = _connectionFactory.GetConnection;
+            var query = $"InsertRequestBook";
+            var para = new DynamicParameters();
+            para.Add("@Details", requestBook.DetailsDT.AsTableValuedParameter("UT_RequestBook"));
+            await conn.QueryFirstOrDefaultAsync<RequestBook>(query, para, commandType: CommandType.StoredProcedure);
         }
     }
 }
