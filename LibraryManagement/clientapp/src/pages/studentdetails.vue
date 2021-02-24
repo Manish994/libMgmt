@@ -298,7 +298,7 @@ export default {
       let vm = this;
       const method = "GET";
       const url = `exportDataToExcel/GetAll`;
-      this.$axios
+      vm.$axios
         .request({
           url,
           method,

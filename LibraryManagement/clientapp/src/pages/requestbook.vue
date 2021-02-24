@@ -83,22 +83,21 @@ export default {
     downloadExcel: async function() {
       let vm = this;
       try {
-        const method = "GET";
-        const url = `exportDataToExcel/GetAll`;
-        this.$axios
+       const method = 'GET';
+      const url = 'bookRequest/pullAllExcel';
+      vm.$axios
           .request({
-            url,
-            method,
-            responseType: "blob" //important
+              url, method,
+              responseType: 'blob', //important
           })
           .then(({ data }) => {
-            const downloadUrl = window.URL.createObjectURL(new Blob([data]));
-            const link = document.createElement("a");
-            link.href = downloadUrl;
-            link.setAttribute("download", "List Of Students.xlsx"); //any other extension
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
+              const downloadUrl = window.URL.createObjectURL(new Blob([data]));
+              const link = document.createElement('a');
+              link.href = downloadUrl;
+              link.setAttribute("download", "List Of Students.xlsx");
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
           });
       } catch (error) {}
     },

@@ -32,6 +32,10 @@ namespace LibraryManagement.Controllers
             try
             {
                 IEnumerable<StudentDetail> studentDetails = await _exportDataToExcel.AllStudents();
+                // memory stream reads and writes to the memory. Stream is representation of bytes.
+                // File stream deals with the files on disk.
+                // use memory stream when you don't want anything to hit the disk.
+                // use file stream when writing a file to disk.
                 var stream = new MemoryStream();
                 using var pck = new ExcelPackage(stream);
                 var ws = pck.Workbook.Worksheets.Add("List Of Students");

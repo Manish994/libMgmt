@@ -40,6 +40,8 @@ namespace LibraryManagement.Repositories
         Task<StudentDetail> GetStudentDetailByRollNumber(int rollNumber);
         Task<BookDetail> BookById(int rollNumber);
         Task InsertRequest(RequestBook requestBook);
+
+        Task<IEnumerable<RequestBook>> PullAll();
     }
     public class LibraryRepository : ILibraryRepository
     {
@@ -211,6 +213,11 @@ namespace LibraryManagement.Repositories
         public async Task<BookDetail> BookById(int rollNumber)
         {
             return await _LibraryDBContext.BookDetails.FirstOrDefaultAsync(x => x.Id == rollNumber);
+        }
+
+        public async Task<IEnumerable<RequestBook>> PullAll()
+        {
+            return await _LibraryDBContext.RequestBooks.ToListAsync();
         }
     }
 }
